@@ -1,0 +1,83 @@
+.paginationContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0;
+    /* Important */
+  
+
+    background: transparent;
+    box-shadow: none;
+}
+.pageControls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.pageButton:hover,
+.prevBtn:hover,
+.nextBtn:hover {
+    background-color: rgba(from var(--Primary_Color) r g b / 0.25);
+    color: var(--Black_Color);
+}
+
+.prevBtn:disabled:hover,
+.nextBtn:disabled:hover {
+    cursor: not-allowed;
+    color: rgba(from var(--Black_Color) r g b / 0.25);
+
+}
+
+.pageButton,
+.prevBtn,
+.nextBtn {
+    border: none;
+    background-color: transparent;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.prevBtn,
+.nextBtn {
+    font-size: var(--Font_Size_4);
+}
+
+.active {
+    background-color: var(--Primary_Color);
+    color: var(--White_Color)
+}
+
+.itemsPerPageDropdownContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+}
+
+
+.itemsPerPageLabel {
+    font-weight: 500;
+    font-size: var(--Font_Size_2);
+
+white-space: nowrap;
+}
+
+
+.itemsPerPageDropdown {
+
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    margin-right: 1rem;
+    outline: none;
+
+    text-align: center;
+    /* Center the selected value */
+    text-align-last: center;
+    /* 👈 Most important for select */
+
+    /* Remove default arrow (optional) */
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+}

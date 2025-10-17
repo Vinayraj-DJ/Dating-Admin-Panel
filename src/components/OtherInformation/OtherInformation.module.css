@@ -1,0 +1,30 @@
+.card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+}
+
+.label {
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 0.25rem;
+}
+
+.value {
+    color: #777;
+    font-size: 15px;
+    white-space: pre-wrap;
+}

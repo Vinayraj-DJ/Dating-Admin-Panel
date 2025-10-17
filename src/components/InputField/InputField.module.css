@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+.formInputContainer {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--Primary_Color);
+    background-color: rgba(255, 255, 255, 0.05);
+    /* fallback for rgba-from */
+    font-family: var(--Font_Family);
+    font-size: var(--Font_Size_2);
+    border-radius: 0.25rem;
+    padding-right: 0.5rem;
+    margin: 1rem 0rem 1rem;
+}
+
+.input {
+    border: none;
+    outline: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background: transparent;
+    font-family: var(--Font_Family);
+    font-size: var(--Font_Size_2);
+    color: var(--Secondary_Color);
+    font-weight: 400;
+    width: 100%;
+}
+
+.label {
+    position: absolute;
+    left: 1rem;
+    opacity: 0.25;
+    transition: all 300ms ease;
+    pointer-events: none;
+    font-weight: 500;
+    font-family: var(--Font_Family);
+}
+
+.input:not(:placeholder-shown)+.label {
+    opacity: 1;
+    font-size: var(--Font_Size_1);
+    transform: translateY(-1.6rem);
+    color: var(--Secondary_Color);
+}
+
+.formInputContainer.errorStyle {
+    box-shadow: 0 0 8px var(--Error_Color);
+    color: var(--Error_Color);
+}
+
+.formInputContainer.errorStyle .input,
+.formInputContainer.errorStyle .label {
+    color: var(--Error_Color);
+}
+
+.errorMessage {
+    position: absolute;
+    bottom: -1rem;
+    left: 1rem;
+    font-size: var(--Font_Size_1);
+    font-weight: 600;
+    color: var(--Error_Color);
+    font-family: var(--Font_Family);
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: var(--Font_Size_3);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.formInputContainer:focus-within .icon {
+    color: var(--Accent_Color_Light);
+}
+
+.formInputContainer:focus-within {
+    color: var(--Accent_Color_Light);
+    box-shadow: 0 0 8px var(--Accent_Color_Light);
+}
+
+.formInputContainer:focus-within .input,
+.formInputContainer:focus-within .label {
+    color: var(--Accent_Color_Light);
+}

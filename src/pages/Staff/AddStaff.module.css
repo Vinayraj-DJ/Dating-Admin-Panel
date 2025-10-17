@@ -1,0 +1,62 @@
+.	container {
+		padding: 1.5rem;
+		background-color: var(--Background_Color);
+		min-height: 91vh;
+	}
+
+.	heading {
+		font-size: 24px;
+		font-weight: 600;
+		margin-bottom: 1rem;
+	}
+
+.	form {
+		background-color: #ffffff;
+		border-radius: 12px;
+		padding: 1.25rem;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+		border: 1px solid #e0e0e0;
+		max-width: 720px;
+	}
+
+.	sectionTitle {
+		font-weight: 600;
+		margin: 1rem 0 0.5rem;
+	}
+
+.	permGrid {
+		display: grid;
+		grid-template-columns: 1fr auto auto auto;
+		gap: 0.5rem 1rem;
+		align-items: center;
+		border: 1px solid #eee;
+		border-radius: 8px;
+		padding: 0.75rem;
+		margin-bottom: 1rem;
+	}
+
+.	permHead {
+		font-size: 14px;
+		font-weight: 600;
+		color: #666;
+	}
+
+.	permRowLabel {
+		font-weight: 500;
+	}
+
+.	checkbox {
+		transform: scale(1.1);
+	}
+
+.	buttonContainer {
+		display: flex;
+		gap: 0.75rem;
+	}
+
+.	error {
+		color: #c0392b;
+		margin: 0.5rem 0;
+	}
+
+

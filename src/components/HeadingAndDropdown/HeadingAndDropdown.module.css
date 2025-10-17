@@ -1,0 +1,74 @@
+.dropdownBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+    margin-bottom: 0.4rem;
+}
+
+.inputLabel {
+    font-size: var(--Font_Size_3);
+    font-weight: 400;
+    color: var(--Black_Color);
+}
+
+.required {
+    color: var(--Black_Color);
+    font-weight: 600;
+}
+
+.dropdownContainer {
+    position: relative;
+}
+
+.selected {
+    background-color: var(--White_Color);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04);
+    cursor: pointer;
+}
+
+.selectedText {
+    color: var(--Black_Color);
+}
+
+.placeholderText {
+    color: var(--Grey_Color);
+}
+
+.icon {
+    transition: transform 0.2s ease;
+    color: var(--Black_Color);
+}
+
+.iconOpen {
+    transform: rotate(180deg);
+}
+
+.optionsList {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background: var(--White_Color);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    list-style: none;
+    padding: 0.3rem 0;
+    width: 100%;
+    z-index: 10;
+}
+
+.optionItem {
+    padding: 0.5rem 1rem;
+    font-size: var(--Font_Size_3);
+    color: var(--Black_Color);
+    cursor: pointer;
+}
+
+.optionItem:hover {
+    background-color: #f0f4ff;
+}

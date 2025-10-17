@@ -1,0 +1,42 @@
+.SideBar {
+    position: relative;
+    background-color: var(--Background_Color);
+    box-shadow: 0px 0px 8px 1px rgba(from var(--Primary_Color) r g b / 0.5);
+    width: 15rem;
+    height: 100vh;
+    padding: 0rem 0.5rem;
+    z-index: 99;
+    overflow-y: auto;
+}
+
+.schoolInfoBox {
+    position: relative;
+    display: flex;
+    align-items: center;
+    text-align: start;
+    border-bottom: 2px solid rgba(from var(--Primary_Color) r g b / 0.25);
+    padding: 0.5rem;
+    gap: 0.5rem;
+}
+
+.logoIconBox {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0.5rem;
+}
+
+.logo {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.MenuItemsList {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    margin-top: 0.5rem;
+}

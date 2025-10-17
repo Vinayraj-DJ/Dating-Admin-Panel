@@ -1,0 +1,150 @@
+/* src/views/RootLayout/LogIn/LogIn.module.css */
+
+:root {
+    --bg1: #0b0e19;
+    --bg2: #12142a;
+    --card: #1b1e2c;
+    --card-2: #1e2130;
+    --text: #e6ebf5;
+    --muted: #9aa3b2;
+    --gold1: #f0c776;
+    --gold2: #d39a3b;
+    --gold3: #b9842f;
+    --error: #ff6b6b;
+}
+
+.screen {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background:
+        radial-gradient(1200px 600px at 20% 15%, #1a1f3a 0%, rgba(26, 31, 58, 0) 65%),
+        radial-gradient(800px 400px at 80% 85%, #151a33 0%, rgba(21, 26, 51, 0) 60%),
+        linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+    color: var(--text);
+    position: relative;
+    overflow: hidden;
+}
+
+.cardShadow {
+    position: absolute;
+    width: 520px;
+    height: 520px;
+    filter: blur(90px);
+    background: radial-gradient(closest-side, rgba(227, 181, 85, 0.16), transparent);
+    transform: translate(120px, -60px);
+    pointer-events: none;
+}
+
+.card {
+    width: 420px;
+    max-width: 92vw;
+    height: 360px;
+    background: linear-gradient(180deg, rgba(35, 37, 55, 0.75), rgba(27, 30, 44, 0.8));
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 18px;
+    padding: 28px 28px 26px;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.title {
+    margin: 6px 0 18px;
+    text-align: center;
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    background: linear-gradient(180deg, var(--gold1), var(--gold2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.row {
+    margin: 12px 0;
+}
+
+/* If your InputField exposes a container class via className, you can also apply:
+.row :global(input) { ... }  — skipping here to avoid coupling. */
+
+.submit {
+    width: 100%;
+    height: 45px;
+    margin-top: 14px;
+    border: none;
+    outline: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0e0e0e;
+    cursor: pointer;
+    background: linear-gradient(180deg, var(--gold1), var(--gold2));
+    box-shadow:
+        0 10px 22px rgba(211, 154, 59, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    transition: transform 0.08s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.submit:hover {
+    filter: brightness(1.03);
+
+}
+
+.submit:active {
+    transform: translateY(1px);
+}
+
+.submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    filter: grayscale(0.15);
+}
+
+.error {
+    background: rgba(255, 107, 107, 0.1);
+    color: var(--error);
+    border: 1px solid rgba(255, 107, 107, 0.35);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.selectContainer {
+    position: relative;
+    width: 100%;
+}
+
+.select {
+    width: 100%;
+    height: 45px;
+    padding: 0 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.select:focus {
+    border-color: var(--gold1);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.select option {
+    background: var(--card);
+    color: var(--text);
+    padding: 8px;
+}
+
+.fieldError {
+    color: var(--error);
+    font-size: 12px;
+    margin-top: 4px;
+    margin-left: 4px;
+}

@@ -1,0 +1,65 @@
+.TopBarWrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: var(--White_Color);
+    padding: 10px 20px;
+    border-bottom: 1px solid #e1e1e1;
+    height: 60px;
+}
+
+.actionIcons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.iconButton {
+    cursor: pointer;
+    color: #333;
+    transition: color 0.3s;
+}
+
+.iconButton:hover {
+    color: #007bff;
+}
+
+.profileSection {
+    position: relative;
+}
+
+.profileIcon {
+    cursor: pointer;
+}
+
+.profileDropdown {
+    position: absolute;
+    top: 130%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    list-style: none;
+    padding: 10px 0;
+    width: 160px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    z-index: 999;
+}
+
+.profileDropdown li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.profileDropdown li:hover {
+    background-color: #f2f2f2;
+}
+
+.profileDropdown a {
+    color: inherit;
+    text-decoration: none;
+    flex-grow: 1;
+}

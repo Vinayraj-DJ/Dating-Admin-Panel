@@ -1,0 +1,63 @@
+.link_container {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.25rem !important;
+    /* font-weight: 500 !important; */
+    font-size: var(--Font_Size_2) !important;
+    cursor: pointer;
+    color: rgba(from var(--Grey_Color) r g b / 1);
+    transition: background-color 0.2s ease, color 0.2s ease;
+    gap: 0.75rem;
+    width: 100%;
+    margin: 0 !important;
+}
+
+.link_container:hover {
+    background-color: var(--Background_Color);
+}
+
+.active {
+    color: var(--Primary_Color);
+    font-weight: 600;
+}
+
+.chevronIcon {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.subLinksContainer {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 100%;
+    gap: 0.25rem;
+}
+
+.subLink {
+    padding: 0.75rem 1rem;
+    font-size: var(--Font_Size_3);
+    color: var(--Grey_Color);
+    border-radius: 12px;
+    margin-left: 2.5rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.subLink:hover {
+    background-color: rgba(from var(--Black_Color) r g b / 0.03);
+    color: var(--Primary_Color);
+}
+
+.activeSub {
+    background-image: linear-gradient(45deg,
+            rgba(from var(--Primary_Color) r g b / 1),
+            rgba(from var(--Primary_Color) r g b / 0.5));
+    color: var(--White_Color) !important;
+    font-weight: 500;
+    border-radius: 12px;
+}

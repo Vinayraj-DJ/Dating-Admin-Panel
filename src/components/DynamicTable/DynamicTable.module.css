@@ -1,0 +1,76 @@
+.Dynamic {
+    width: 100%;
+  
+    padding: 0.5rem;
+    overflow: auto;
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+    font-size: var(--Font_Size_3);
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #d0d0d0;
+    /* 👈 Distinct border */
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+    /* optional soft shadow */
+}
+
+.tableWrapper {
+ 
+    overflow-x: auto;
+    max-width: 200px;
+    overflow-y: hidden;
+    /* ✅ removes second vertical scroll */
+}
+
+/* Header row styling */
+.Dynamic thead tr {
+    background-color: #f4f6fc;
+    font-weight: 600;
+    color: var(--Primary_Color);
+}
+
+.Dynamic thead td {
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Body rows */
+.Dynamic tbody tr {
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+}
+
+.Dynamic tbody tr:hover {
+    background-color: #f9f9f9;
+    transform: scale(1.01);
+}
+
+/* Table data cells */
+.Dynamic td {
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+    white-space: nowrap;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Rounded corners for edges */
+
+
+/* No data box */
+.noDataBox {
+    background-color: #fff;
+    text-align: center;
+    border-radius: 12px;
+    color: var(--Grey_Color);
+    font-size: var(--Font_Size_3);
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 1rem;
+}
+.horizontalScroll {
+    width: 100%;
+    overflow-x: auto;
+    max-width: 200px;
+    overflow-y: hidden;
+    /* prevent vertical scroll */
+}

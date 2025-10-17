@@ -1,0 +1,28 @@
+.container {
+    background-color: var(--Background_Color);
+    padding: 30px;
+    min-height: 91vh;
+}
+
+.heading {
+    font-size: var(--Font_Size_5);
+    font-weight: 700;
+    color: var(--Black_Color);
+    margin-bottom: 24px;
+}
+
+.form {
+    background-color: var(--White_Color);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 10px;
+}

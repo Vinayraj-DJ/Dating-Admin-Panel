@@ -1,0 +1,53 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.label {
+    font-weight: 600;
+    font-size: 16px;
+    color: #1f1f1f;
+}
+
+.inputBox {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    background-color: var(--White_Color);
+    border-radius: 12px;
+    box-shadow: 0px 8px 24px rgba(158, 158, 158, 0.15);
+}
+
+.input {
+    display: none;
+    /* hides the default input */
+}
+
+.customButton {
+    background-color: #eaeaea;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.fileName {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--Black_Color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+}
+.preview {
+    margin-top: 1rem;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}

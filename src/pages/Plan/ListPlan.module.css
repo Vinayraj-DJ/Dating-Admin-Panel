@@ -1,0 +1,50 @@
+.container {
+    padding: 1.25rem;
+    background-color: var(--Background_Color);
+    min-height: 91vh;
+}
+
+.heading {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.tableCard {
+    background-color: #ffffff;
+    border-radius: 12px;
+    max-width: 1150px;
+    padding: 1.25rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e0e0e0;
+    display: flex;
+    overflow-x: auto;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.searchWrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
+
+.publishBadge {
+    background-color: var(--Utility_Color1);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.editIcon {
+    font-size: var(--Font_Size_4);
+    cursor: pointer;
+    color: var(--Primary_Color);
+    transition: color 0.2s;
+}
+
+.editIcon:hover {
+    color: var(--Utility_Color1);
+}

@@ -1,0 +1,37 @@
+.cardWrapper {
+    padding: 1px;
+    width: 100%;
+}
+
+.card {
+    display: flex;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+    align-items: center;
+    height: 120px;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+.label {
+    font-weight: 600;
+    color: #7c3aed;
+    font-size: 15px;
+}
+
+.count {
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+.iconBox img {
+    width: 60px;
+    height: auto;
+}

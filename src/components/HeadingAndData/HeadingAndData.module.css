@@ -1,0 +1,41 @@
+.inputBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    flex: 1;
+}
+
+.inputLabel {
+    font-size: var(--Font_Size_3);
+    font-weight: 400;
+    color: var(--Black_Color);
+}
+
+.required {
+    color: var(--Black_Color);
+    font-weight: 600;
+}
+
+.inputField {
+    padding: 0.75rem 1rem;
+    font-size: var(--Font_Size_3);
+    border: none;
+    outline: none;
+    border-radius: 12px;
+    background-color: var(--White_Color);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    color: var(--Black_Color);
+}
+
+
+
+.inputField:placeholder-shown {
+    color: var(--Grey_Color)
+}
+
+.inputField:focus {
+    border: none;
+    outline: none;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
