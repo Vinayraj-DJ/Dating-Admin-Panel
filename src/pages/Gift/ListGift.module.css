@@ -1,3 +1,4 @@
+/* src/pages/Gift/ListGift.module.css */
 .container {
     padding: 1.5rem;
     background-color: var(--Background_Color);
@@ -36,13 +37,56 @@
     font-size: 14px;
 }
 
+.unpublishBadge {
+    background-color: #f1f3f8;
+    color: #333;
+    padding: 0.25rem 0.75rem;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
 .editIcon {
     font-size: var(--Font_Size_4);
     cursor: pointer;
     color: var(--Primary_Color);
     transition: color 0.2s;
+    margin-right: 12px;
 }
 
 .editIcon:hover {
     color: var(--Utility_Color1);
+}
+
+.deleteIcon {
+    font-size: var(--Font_Size_4);
+    cursor: pointer;
+    color: #000;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+}
+
+.placeholderImg {
+    width: 50px;
+    height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #fafafa;
+    color: #999;
+    font-weight: 600;
+}
+
+.flash {
+    animation: flash-anim 1.2s ease;
+}
+
+@keyframes flash-anim {
+    0% { box-shadow: 0 0 0 0 rgba(0,0,0,0); transform: scale(1); }
+    50% { box-shadow: 0 6px 20px rgba(144, 94, 255, 0.12); transform: scale(1.01); }
+    100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); transform: scale(1); }
 }

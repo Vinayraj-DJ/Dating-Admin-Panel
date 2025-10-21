@@ -1,4 +1,3 @@
-// src/pages/Package/ListPackage.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import styles from "./ListPackage.module.css";
 import SearchBar from "../../components/SearchBar/SearchBar";
@@ -30,7 +29,23 @@ export default function ListPackage() {
     getAllPackages({ signal: ctrl.signal })
       .then((res) => {
         if (!active) return;
-        setItems(Array.isArray(res?.data) ? res.data : []);
+        const raw = Array.isArray(res?.data) ? res.data : [];
+        // Normalize coin -> totalCoin so UI code can always use totalCoin
+        const normalized = raw.map((it) => ({
+          ...it,
+          totalCoin:
+            typeof it.totalCoin !== "undefined" && it.totalCoin !== null
+              ? it.totalCoin
+              : it.coin ?? "",
+          // For safety also ensure amount is present as string/number
+          amount:
+            typeof it.amount !== "undefined" && it.amount !== null
+              ? it.amount
+              : it.amount === 0
+              ? 0
+              : "",
+        }));
+        setItems(normalized);
       })
       .catch((e) => {
         if (e?.name === "CanceledError" || e?.code === "ERR_CANCELED") return;
@@ -55,13 +70,18 @@ export default function ListPackage() {
         if (it._id !== upd.id) return it;
         const next = { ...it };
         const flags = {};
+        // Accept both upd.totalCoin and upd.coin for robustness
         if (
           typeof upd.totalCoin !== "undefined" &&
           upd.totalCoin !== it.totalCoin
         ) {
           next.totalCoin = upd.totalCoin;
           flags.totalCoin = true;
+        } else if (typeof upd.coin !== "undefined" && upd.coin !== it.totalCoin) {
+          next.totalCoin = upd.coin;
+          flags.totalCoin = true;
         }
+
         if (typeof upd.amount !== "undefined" && upd.amount !== it.amount) {
           next.amount = upd.amount;
           flags.amount = true;
@@ -130,12 +150,14 @@ export default function ListPackage() {
           sr: startIdx + i + 1,
           coin: (
             <span className={hl.totalCoin ? styles.flash : ""}>
-              {it.totalCoin ?? "-"}
+              {it.totalCoin !== "" && typeof it.totalCoin !== "undefined"
+                ? it.totalCoin
+                : "-"}
             </span>
           ),
           amount: (
             <span className={hl.amount ? styles.flash : ""}>
-              {it.amount ?? "-"}
+              {it.amount !== "" && typeof it.amount !== "undefined" ? it.amount : "-"}
             </span>
           ),
           status: (

@@ -12,19 +12,20 @@ import {
 } from "../../services/interestService";
 import { API_BASE } from "../../config/apiConfig";
 
-const fixIconUrl = (icon) =>
-  !icon
-    ? ""
-    : /^https?:\/\//i.test(icon)
-    ? icon
-    : `${API_BASE}/${String(icon).replace(/^\/+/, "")}`;
+const fixIconUrl = (icon) => {
+  if (!icon) return "";
+  if (typeof icon !== "string") return "";
+  if (/^https?:\/\//i.test(icon)) return icon;
+  if (!API_BASE) return icon;
+  return `${API_BASE}/${String(icon).replace(/^\/+/, "")}`;
+};
 
 export default function ListInterest() {
   const navigate = useNavigate();
   const location = useLocation();
 
   const [items, setItems] = useState([]);
-  const [highlight, setHighlight] = useState({}); // {id: {name:true, status:true, icon:true}}
+  const [highlight, setHighlight] = useState({}); // {id: {title:true, status:true, icon:true}}
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
 
@@ -32,7 +33,7 @@ export default function ListInterest() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  // StrictMode-safe initial load (ignore abort/cancel)
+  // load
   useEffect(() => {
     const ctrl = new AbortController();
     let active = true;
@@ -43,6 +44,7 @@ export default function ListInterest() {
     getAllInterests({ signal: ctrl.signal })
       .then((res) => {
         if (!active) return;
+        // res expected shape: { success, data: [...] }
         setItems(Array.isArray(res?.data) ? res.data : []);
       })
       .catch((e) => {
@@ -60,7 +62,7 @@ export default function ListInterest() {
     };
   }, []);
 
-  // ✅ apply partial patch when coming back from edit
+  // apply partial patch when coming back from edit
   useEffect(() => {
     const upd = location.state?.updated;
     if (!upd?.id) return;
@@ -70,16 +72,16 @@ export default function ListInterest() {
         if (it._id !== upd.id) return it;
         const next = { ...it };
         const cellFlags = {};
-        if (typeof upd.name !== "undefined" && upd.name !== it.name) {
-          next.name = upd.name;
-          cellFlags.name = true;
+        if (typeof upd.title !== "undefined" && upd.title !== it.title) {
+          next.title = upd.title;
+          cellFlags.title = true;
         }
         if (typeof upd.status !== "undefined" && upd.status !== it.status) {
           next.status = upd.status;
           cellFlags.status = true;
         }
-        if (typeof upd.icon !== "undefined" && upd.icon) {
-          next.icon = upd.icon; // server path
+        if (typeof upd.imageUrl !== "undefined" && upd.imageUrl) {
+          next.imageUrl = upd.imageUrl; // server path
           cellFlags.icon = true;
         }
         if (Object.keys(cellFlags).length) {
@@ -104,9 +106,7 @@ export default function ListInterest() {
     const q = searchTerm.trim().toLowerCase();
     if (!q) return items;
     return items.filter((it) =>
-      String(it.name || "")
-        .toLowerCase()
-        .includes(q)
+      String(it.title || "").toLowerCase().includes(q)
     );
   }, [items, searchTerm]);
 
@@ -114,7 +114,7 @@ export default function ListInterest() {
   const currentData = filtered.slice(startIdx, startIdx + itemsPerPage);
 
   const doDelete = async (row) => {
-    if (!window.confirm(`Delete "${row.name}"?`)) return;
+    if (!window.confirm(`Delete "${row.title}"?`)) return;
     try {
       await deleteInterest({ id: row._id });
       setItems((prev) => prev.filter((i) => i._id !== row._id));
@@ -137,17 +137,18 @@ export default function ListInterest() {
   const columnData = useMemo(
     () =>
       currentData.map((it, i) => {
-        const url = fixIconUrl(it.icon);
+        // server returns imageUrl
+        const url = fixIconUrl(it.imageUrl || it.image || "");
         const hl = highlight[it._id] || {};
         return {
           sr: startIdx + i + 1,
           image: url ? (
             <img
               src={url}
-              alt={it.name || "interest"}
+              alt={it.title || "interest"}
               width={50}
               height={50}
-              className={hl.icon ? styles.flash : ""}
+              className={`${hl.icon ? styles.flash : ""} ${styles.tableImg}`}
               style={{ objectFit: "cover", borderRadius: 8 }}
               onError={(e) => (e.currentTarget.style.display = "none")}
             />
@@ -161,8 +162,8 @@ export default function ListInterest() {
             </div>
           ),
           title: (
-            <span className={hl.name ? styles.flash : ""}>
-              {it.name || "-"}
+            <span className={hl.title ? styles.flash : ""}>
+              {it.title || "-"}
             </span>
           ),
           status: (
@@ -173,7 +174,7 @@ export default function ListInterest() {
                   : styles.unpublishBadge
               } ${hl.status ? styles.flash : ""}`}
             >
-              {it.status || "Unpublish"}
+              {it.status || "unpublish"}
             </span>
           ),
           action: (

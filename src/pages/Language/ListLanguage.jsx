@@ -24,7 +24,7 @@ export default function ListLanguage() {
   const location = useLocation();
 
   const [items, setItems] = useState([]);
-  const [highlight, setHighlight] = useState({}); // {id: {name:true, status:true, icon:true}}
+  const [highlight, setHighlight] = useState({});
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
 
@@ -32,7 +32,6 @@ export default function ListLanguage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  // load once
   useEffect(() => {
     const ctrl = new AbortController();
     let active = true;
@@ -57,7 +56,6 @@ export default function ListLanguage() {
     };
   }, []);
 
-  // patch in-place after edit
   useEffect(() => {
     const upd = location.state?.updated;
     if (!upd?.id) return;
@@ -67,7 +65,8 @@ export default function ListLanguage() {
         if (it._id !== upd.id) return it;
         const next = { ...it };
         const cellFlags = {};
-        if (typeof upd.name !== "undefined" && upd.name !== it.name) {
+        if (typeof upd.name !== "undefined" && upd.name !== it.title && upd.name !== it.name) {
+          next.title = upd.name;
           next.name = upd.name;
           cellFlags.name = true;
         }
@@ -76,6 +75,7 @@ export default function ListLanguage() {
           cellFlags.status = true;
         }
         if (typeof upd.icon !== "undefined" && upd.icon) {
+          next.imageUrl = upd.icon;
           next.icon = upd.icon;
           cellFlags.icon = true;
         }
@@ -95,6 +95,27 @@ export default function ListLanguage() {
     navigate(".", { replace: true, state: {} });
   }, [location.state, navigate]);
 
+  const filtered = useMemo(() => {
+    const q = searchTerm.trim().toLowerCase();
+    if (!q) return items;
+    return items.filter((it) =>
+      String(it.title ?? it.name ?? "").toLowerCase().includes(q)
+    );
+  }, [items, searchTerm]);
+
+  const startIdx = (currentPage - 1) * itemsPerPage;
+  const currentData = filtered.slice(startIdx, startIdx + itemsPerPage);
+
+  const doDelete = async (row) => {
+    if (!window.confirm(`Delete "${row.title ?? row.name}"?`)) return;
+    try {
+      await deleteLanguage({ id: row._id });
+      setItems((prev) => prev.filter((i) => i._id !== row._id));
+    } catch (e) {
+      alert(e?.response?.data?.message || e?.message || "Delete failed");
+    }
+  };
+
   const headings = useMemo(
     () => [
       { title: "Sr No.", accessor: "sr" },
@@ -106,33 +127,10 @@ export default function ListLanguage() {
     []
   );
 
-  const filtered = useMemo(() => {
-    const q = searchTerm.trim().toLowerCase();
-    if (!q) return items;
-    return items.filter((it) =>
-      String(it.name || "")
-        .toLowerCase()
-        .includes(q)
-    );
-  }, [items, searchTerm]);
-
-  const startIdx = (currentPage - 1) * itemsPerPage;
-  const currentData = filtered.slice(startIdx, startIdx + itemsPerPage);
-
-  const doDelete = async (row) => {
-    if (!window.confirm(`Delete "${row.name}"?`)) return;
-    try {
-      await deleteLanguage({ id: row._id });
-      setItems((prev) => prev.filter((i) => i._id !== row._id));
-    } catch (e) {
-      alert(e?.response?.data?.message || e?.message || "Delete failed");
-    }
-  };
-
   const columnData = useMemo(
     () =>
       currentData.map((it, i) => {
-        const url = fixIconUrl(it.icon);
+        const url = fixIconUrl(it.imageUrl ?? it.image ?? it.icon ?? "");
         const hl = highlight[it._id] || {};
         const isPub = String(it.status || "").toLowerCase() === "publish";
         return {
@@ -140,10 +138,10 @@ export default function ListLanguage() {
           image: url ? (
             <img
               src={url}
-              alt={it.name || "language"}
+              alt={it.title ?? it.name ?? "language"}
               width={50}
               height={50}
-              className={hl.icon ? styles.flash : ""}
+              className={`${hl.icon ? styles.flash : ""} ${styles.tableImg}`}
               style={{ objectFit: "cover", borderRadius: 8 }}
               onError={(e) => (e.currentTarget.style.display = "none")}
             />
@@ -158,7 +156,7 @@ export default function ListLanguage() {
           ),
           title: (
             <span className={hl.name ? styles.flash : ""}>
-              {it.name || "-"}
+              {it.title ?? it.name ?? "-"}
             </span>
           ),
           status: (
@@ -167,7 +165,7 @@ export default function ListLanguage() {
                 isPub ? styles.publishBadge : styles.unpublishBadge
               } ${hl.status ? styles.flash : ""}`}
             >
-              {it.status || "Unpublish"}
+              {it.status ?? "unpublish"}
             </span>
           ),
           action: (

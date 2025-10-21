@@ -1,14 +1,18 @@
+/* src/pages/Interest/ListInterest.module.css */
+
 .container {
     padding: 1.5rem;
     background-color: var(--Background_Color);
-    min-height:92vh;
+    min-height: 92vh;
 }
 
 .heading {
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 1rem;
-}.flash {
+}
+
+.flash {
     animation: flashBg 1.2s ease-out;
 }
 
@@ -17,7 +21,6 @@
         box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.6);
         background: rgba(124, 58, 237, 0.12);
     }
-
     100% {
         box-shadow: none;
         background: transparent;
@@ -50,13 +53,64 @@
     font-size: 14px;
 }
 
+.unpublishBadge {
+    background: #f3f3f3;
+    color: #444;
+    padding: 0.25rem 0.75rem;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.tableImg {
+    display: inline-block;
+}
+
+.placeholderImg {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+    background: #fafafa;
+    border: 1px solid #eee;
+    font-weight: 600;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
 .editIcon {
     font-size: var(--Font_Size_4);
     cursor: pointer;
-    color:var(--Primary_Color);
+    color: var(--Primary_Color);
     transition: color 0.2s;
 }
 
 .editIcon:hover {
-    color: var(--Utility_Color_1);
+    color: var(--Utility_Color1);
+}
+
+.deleteIcon {
+    font-size: var(--Font_Size_4);
+    cursor: pointer;
+    color: #111;
+}
+
+.loading {
+    padding: 24px;
+    text-align: center;
+    color: #666;
+}
+
+.error {
+    padding: 12px;
+    border-radius: 8px;
+    color: var(--Danger_Color, #d64545);
+    background: rgba(214,69,69,0.06);
 }

@@ -1,7 +1,6 @@
 // src/pages/Interest/AddInterest.jsx
 import React, { useEffect, useState } from "react";
 import styles from "./AddInterest.module.css";
-import HeadingAndData from "../../components/HeadingAndData/HeadingAndData";
 import HeadingAndDropDown from "../../components/HeadingAndDropdown/HeadingAndDropdown";
 import Button from "../../components/Button/Button";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,6 +13,7 @@ import { API_BASE } from "../../config/apiConfig";
 
 const fixIconUrl = (icon) => {
   if (!icon) return "";
+  if (typeof icon !== "string") return "";
   if (/^https?:\/\//i.test(icon)) return icon;
   if (!API_BASE) return icon;
   return `${API_BASE}/${String(icon).replace(/^\/+/, "")}`;
@@ -25,16 +25,16 @@ export default function AddInterest() {
   const isEdit = Boolean(id);
 
   const [form, setForm] = useState({
-    name: "",
-    status: "Unpublish", // backend expects Publish | Unpublish
+    title: "",
+    status: "unpublish", // backend expects lowercase publish|unpublish
     iconFile: null,
     previewUrl: "",
   });
 
   const [initial, setInitial] = useState({
-    name: "",
-    status: "Unpublish",
-    icon: "",
+    title: "",
+    status: "unpublish",
+    imageUrl: "",
   });
 
   const [saving, setSaving] = useState(false);
@@ -50,21 +50,22 @@ export default function AddInterest() {
     (async () => {
       try {
         const res = await getAllInterests({ signal: ctrl.signal });
+        // res is expected shape: { success, data: [...] }
         const items = Array.isArray(res?.data) ? res.data : [];
         const found = items.find((x) => x._id === id);
         if (!ignore && found) {
-          const iconUrl = fixIconUrl(found.icon || "");
+          const imageUrl = fixIconUrl(found.imageUrl || "");
           setInitial({
-            name: found.name || "",
-            status: found.status || "Unpublish",
-            icon: iconUrl,
+            title: found.title || "",
+            status: (found.status || "unpublish").toLowerCase(),
+            imageUrl,
           });
           setForm((p) => ({
             ...p,
-            name: found.name || "",
-            status: found.status || "Unpublish",
+            title: found.title || "",
+            status: (found.status || "unpublish").toLowerCase(),
             iconFile: null,
-            previewUrl: iconUrl,
+            previewUrl: imageUrl,
           }));
           setErr("");
         } else if (!ignore) {
@@ -81,7 +82,8 @@ export default function AddInterest() {
     };
   }, [id, isEdit]);
 
-  const onChange = (e) => {
+  // Controlled input onChange
+  const onChangeInput = (e) => {
     const { name, value } = e.target;
     setForm((p) => ({ ...p, [name]: value }));
   };
@@ -89,7 +91,7 @@ export default function AddInterest() {
   const onFileChange = (e) => {
     const file = e.target.files?.[0] || null;
     if (!file) {
-      setForm((p) => ({ ...p, iconFile: null, previewUrl: initial.icon }));
+      setForm((p) => ({ ...p, iconFile: null, previewUrl: initial.imageUrl }));
       return;
     }
     setForm((p) => ({
@@ -104,8 +106,8 @@ export default function AddInterest() {
     setErr("");
     setNotice("");
 
-    const name = form.name.trim();
-    if (!name) return setErr("Title is required");
+    const title = (form.title || "").trim();
+    if (!title) return setErr("Title is required");
     if (!isEdit && !form.iconFile) return setErr("Please choose an image");
 
     if (saving) return; // guard double click
@@ -117,10 +119,11 @@ export default function AddInterest() {
       if (isEdit) {
         // Build a partial payload (only changed keys) — backend needs "id"
         const patch = { id };
-        if (name !== initial.name) patch.name = name;
+        if (title !== initial.title) patch.name = title; // service expects "title" but we'll pass name/title to service as arg
         if (form.status !== initial.status) patch.status = form.status;
         if (form.iconFile) patch.iconFile = form.iconFile;
 
+        // If nothing changed
         if (
           !("name" in patch) &&
           !("status" in patch) &&
@@ -130,10 +133,12 @@ export default function AddInterest() {
           return;
         }
 
+        // Note: updateInterestPartial accepts { id, name, status, iconFile }
         await updateInterestPartial(patch, { signal: ctrl.signal });
       } else {
+        // addInterest expects { name, status, iconFile } but backend expects title->handled by service
         await addInterest(
-          { name, status: form.status, iconFile: form.iconFile },
+          { name: title, status: form.status, iconFile: form.iconFile },
           { signal: ctrl.signal }
         );
       }
@@ -161,42 +166,54 @@ export default function AddInterest() {
       <form className={styles.form} onSubmit={submit} noValidate>
         <div className={styles.block}>
           <label className={styles.label}>Interest Image</label>
-          <input type="file" accept="image/*" onChange={onFileChange} />
-          {form.previewUrl && (
+          <input
+            type="file"
+            accept="image/*"
+            onChange={onFileChange}
+            className={styles.fileInput}
+          />
+          {form.previewUrl ? (
             <img
               src={form.previewUrl}
               alt="preview"
-              style={{
-                marginTop: 12,
-                width: 120,
-                height: 80,
-                objectFit: "cover",
-                borderRadius: 8,
-              }}
+              className={styles.previewImg}
               onError={(e) => {
                 e.currentTarget.style.display = "none";
               }}
             />
+          ) : (
+            <div className={styles.previewPlaceholder}>No image</div>
           )}
         </div>
 
-        <HeadingAndData
-          label="Interest Title"
-          name="name"
-          value={form.name}
-          placeholder="Enter interest title"
-          onChange={onChange}
-          required
-        />
+        {/* Controlled Title input */}
+        <div className={styles.block}>
+          <label className={styles.label}>Interest Title</label>
+          <input
+            name="title"
+            value={form.title}
+            placeholder="Enter interest title"
+            onChange={onChangeInput}
+            required
+            className={styles.textInput}
+          />
+        </div>
 
         <HeadingAndDropDown
           label="Interest Status"
           name="status"
           value={form.status}
-          onChange={onChange}
+          onChange={(e) => {
+            // support both event-style and direct value
+            if (e && e.target && typeof e.target.name === "string") {
+              onChangeInput(e);
+            } else {
+              setForm((p) => ({ ...p, status: e }));
+            }
+          }}
           options={[
-            { value: "Publish", label: "Publish" },
-            { value: "Unpublish", label: "Unpublish" },
+            { value: "publish", label: "Publish" },
+            { value: "unpublish", label: "Unpublish" },
           ]}
           placeholder="Select Status"
           required

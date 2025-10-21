@@ -10,11 +10,7 @@ import { getAllGifts, deleteGift } from "../../services/giftService";
 import { API_BASE } from "../../config/apiConfig";
 
 const fixIconUrl = (icon) =>
-  !icon
-    ? ""
-    : /^https?:\/\//i.test(icon)
-    ? icon
-    : `${API_BASE}/${String(icon).replace(/^\/+/, "")}`;
+  !icon ? "" : /^https?:\/\//i.test(icon) ? icon : `${API_BASE}/${String(icon).replace(/^\/+/, "")}`;
 
 export default function ListGift() {
   const navigate = useNavigate();
@@ -37,11 +33,16 @@ export default function ListGift() {
     setLoading(true);
     setErr("");
     getAllGifts({ signal: ctrl.signal })
-      .then((res) => {
+      .then((resList) => {
         if (!active) return;
-        const list = Array.isArray(res?.data) ? res.data : [];
-        // Normalize: expose coin for UI (API uses price)
-        const normalized = list.map((g) => ({ ...g, coin: g.coin ?? g.price }));
+        const list = Array.isArray(resList) ? resList : Array.isArray(resList?.data) ? resList.data : [];
+        // Ensure each item has coin, icon, status normalized
+        const normalized = list.map((g) => ({
+          ...g,
+          coin: g.coin ?? g.price ?? "",
+          icon: g.icon ?? g.image ?? g.imageUrl ?? g.path ?? "",
+          status: String(g.status || "").toLowerCase(),
+        }));
         setItems(normalized);
       })
       .catch((e) => {
@@ -67,14 +68,11 @@ export default function ListGift() {
         if (it._id !== upd.id) return it;
         const next = { ...it };
         const flags = {};
-        if (
-          typeof upd.coin !== "undefined" &&
-          String(upd.coin) !== String(it.coin)
-        ) {
+        if (typeof upd.coin !== "undefined" && String(upd.coin) !== String(it.coin)) {
           next.coin = upd.coin;
           flags.coin = true;
         }
-        if (typeof upd.status !== "undefined" && upd.status !== it.status) {
+        if (typeof upd.status !== "undefined" && (String(upd.status).toLowerCase() !== String(it.status).toLowerCase())) {
           next.status = upd.status;
           flags.status = true;
         }
@@ -102,11 +100,7 @@ export default function ListGift() {
   const filtered = useMemo(() => {
     const q = searchTerm.trim().toLowerCase();
     if (!q) return items;
-    return items.filter((it) =>
-      String(it.coin ?? "")
-        .toLowerCase()
-        .includes(q)
-    );
+    return items.filter((it) => String(it.coin ?? "").toLowerCase().includes(q));
   }, [items, searchTerm]);
 
   const startIdx = (currentPage - 1) * itemsPerPage;
@@ -151,42 +145,22 @@ export default function ListGift() {
               onError={(e) => (e.currentTarget.style.display = "none")}
             />
           ) : (
-            <div
-              className={`${styles.placeholderImg} ${
-                hl.icon ? styles.flash : ""
-              }`}
-            >
-              —
-            </div>
+            <div className={`${styles.placeholderImg} ${hl.icon ? styles.flash : ""}`}>—</div>
           ),
-          coin: (
-            <span className={hl.coin ? styles.flash : ""}>
-              {it.coin ?? "-"}
-            </span>
-          ),
+          coin: <span className={hl.coin ? styles.flash : ""}>{it.coin ?? "-"}</span>,
           status: (
             <span
-              className={`${
-                (it.status || "").toLowerCase() === "publish"
-                  ? styles.publishBadge
-                  : styles.unpublishBadge
-              } ${hl.status ? styles.flash : ""}`}
+              className={`${(it.status || "").toLowerCase() === "publish" ? styles.publishBadge : styles.unpublishBadge} ${
+                hl.status ? styles.flash : ""
+              }`}
             >
-              {it.status || "UnPublish"}
+              {it.status || "unpublish"}
             </span>
           ),
           action: (
             <div className={styles.actions}>
-              <FaEdit
-                className={styles.editIcon}
-                title="Edit"
-                onClick={() => navigate(`/gift/editgift/${it._id}`)}
-              />
-              <FaTrash
-                className={styles.deleteIcon}
-                title="Delete"
-                onClick={() => doDelete(it)}
-              />
+              <FaEdit className={styles.editIcon} title="Edit" onClick={() => navigate(`/gift/editgift/${it._id}`)} />
+              <FaTrash className={styles.deleteIcon} title="Delete" onClick={() => doDelete(it)} />
             </div>
           ),
         };
@@ -214,11 +188,7 @@ export default function ListGift() {
           <div className={styles.error}>{err}</div>
         ) : (
           <>
-            <DynamicTable
-              headings={headings}
-              columnData={columnData}
-              noDataMessage="No gifts found."
-            />
+            <DynamicTable headings={headings} columnData={columnData} noDataMessage="No gifts found." />
             <PaginationTable
               data={filtered}
               currentPage={currentPage}

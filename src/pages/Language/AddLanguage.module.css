@@ -1,3 +1,5 @@
+/* src/pages/Language/AddLanguage.module.css */
+
 .container {
     background-color: var(--Background_Color);
     padding: 30px;
@@ -21,8 +23,69 @@
     gap: 20px;
 }
 
+.block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--Black_Color);
+}
+
+.fileInput {
+    padding: 8px 0;
+}
+
+.previewImg {
+    margin-top: 12px;
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+.previewPlaceholder {
+    margin-top: 12px;
+    width: 120px;
+    height: 80px;
+    border-radius: 8px;
+    background: #f4f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-weight: 600;
+}
+
+.textInput {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .buttonContainer {
     display: flex;
     justify-content: flex-start;
     margin-top: 10px;
+}
+
+.error {
+    color: var(--Danger_Color, #d64545);
+    background: rgba(214,69,69,0.06);
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.notice {
+    color: var(--Info_Color, #333);
+    background: rgba(0,0,0,0.03);
+    padding: 8px 12px;
+    border-radius: 8px;
 }

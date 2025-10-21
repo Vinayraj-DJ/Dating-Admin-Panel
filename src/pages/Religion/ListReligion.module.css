@@ -1,3 +1,5 @@
+/* src/pages/Religion/ListReligion.module.css */
+
 .container {
     padding: 1.5rem;
     background-color: var(--Background_Color);
@@ -8,6 +10,21 @@
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 1rem;
+}
+
+.flash {
+    animation: flashBg 1.2s ease-out;
+}
+
+@keyframes flashBg {
+    0% {
+        box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.6);
+        background: rgba(124, 58, 237, 0.12);
+    }
+    100% {
+        box-shadow: none;
+        background: transparent;
+    }
 }
 
 .tableCard {
@@ -36,6 +53,21 @@
     font-size: 14px;
 }
 
+.unpublishBadge {
+    background: #f3f3f3;
+    color: #444;
+    padding: 0.25rem 0.75rem;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
 .editIcon {
     font-size: var(--Font_Size_4);
     cursor: pointer;
@@ -45,4 +77,23 @@
 
 .editIcon:hover {
     color: #a64cf2;
+}
+
+.deleteIcon {
+    font-size: var(--Font_Size_4);
+    cursor: pointer;
+    color: #111;
+}
+
+.loading {
+    padding: 24px;
+    text-align: center;
+    color: #666;
+}
+
+.error {
+    padding: 12px;
+    border-radius: 8px;
+    color: var(--Danger_Color, #d64545);
+    background: rgba(214,69,69,0.06);
 }

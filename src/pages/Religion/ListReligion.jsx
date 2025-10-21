@@ -34,6 +34,7 @@ export default function ListReligion() {
     getAllReligions({ signal: ctrl.signal })
       .then((res) => {
         if (!active) return;
+        // res shape: { success, data: [...] }
         setItems(Array.isArray(res?.data) ? res.data : []);
       })
       .catch((e) => {
@@ -59,7 +60,9 @@ export default function ListReligion() {
         if (it._id !== upd.id) return it;
         const next = { ...it };
         const cellFlags = {};
-        if (typeof upd.name !== "undefined" && upd.name !== it.name) {
+        if (typeof upd.name !== "undefined" && upd.name !== it.title && upd.name !== it.name) {
+          // backend uses title but we may have used name earlier
+          next.title = upd.name;
           next.name = upd.name;
           cellFlags.name = true;
         }
@@ -97,9 +100,7 @@ export default function ListReligion() {
     const q = searchTerm.trim().toLowerCase();
     if (!q) return items;
     return items.filter((it) =>
-      String(it.name || "")
-        .toLowerCase()
-        .includes(q)
+      String(it.title ?? it.name ?? "").toLowerCase().includes(q)
     );
   }, [items, searchTerm]);
 
@@ -107,7 +108,7 @@ export default function ListReligion() {
   const currentData = filtered.slice(startIdx, startIdx + itemsPerPage);
 
   const doDelete = async (row) => {
-    if (!window.confirm(`Delete "${row.name}"?`)) return;
+    if (!window.confirm(`Delete "${row.title ?? row.name}"?`)) return;
     try {
       await deleteReligion({ id: row._id });
       setItems((prev) => prev.filter((i) => i._id !== row._id));
@@ -126,7 +127,7 @@ export default function ListReligion() {
           sr: startIdx + i + 1,
           title: (
             <span className={hl.name ? styles.flash : ""}>
-              {it.name || "-"}
+              {it.title ?? it.name ?? "-"}
             </span>
           ),
           status: (
@@ -135,7 +136,7 @@ export default function ListReligion() {
                 isPub ? styles.publishBadge : styles.unpublishBadge
               } ${hl.status ? styles.flash : ""}`}
             >
-              {it.status || "UnPublish"}
+              {it.status ?? "unpublish"}
             </span>
           ),
           action: (

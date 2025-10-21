@@ -1,4 +1,3 @@
-// src/pages/Package/AddPackage.jsx
 import React, { useEffect, useState } from "react";
 import styles from "./AddPackage.module.css";
 import { useParams, useNavigate } from "react-router-dom";
@@ -48,8 +47,11 @@ export default function AddPackage() {
           setErr("Item not found.");
           return;
         }
+        // Accept either found.totalCoin or found.coin (API may use coin)
         const next = {
-          totalCoin: String(found.totalCoin ?? ""),
+          totalCoin: String(
+            typeof found.totalCoin !== "undefined" ? found.totalCoin : found.coin ?? ""
+          ),
           amount: String(found.amount ?? ""),
           status: found.status || "UnPublish",
         };
