@@ -1,4 +1,5 @@
 // src/routes/AppRoutes.jsx
+import React from "react";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 
 // Public pages
@@ -25,7 +26,11 @@ import ListPlan from "../pages/Plan/ListPlan";
 import AddPackage from "../pages/Package/AddPackage";
 import ListPackage from "../pages/Package/ListPackage";
 import AdminProfile from "../pages/AdminProfile/AdminProfile";
+
+// Staff
+import AddStaff from "../pages/Staff/AddStaff";
 import ListStaff from "../pages/Staff/ListStaff";
+
 import PaymentList from "../pages/PaymentList/PaymentList";
 import ReportList from "../pages/ReportList/ReportList";
 import ListPage from "../pages/Page/ListPage";
@@ -33,7 +38,11 @@ import AddPage from "../pages/Page/AddPage";
 import PayoutList from "../pages/PayoutList/PayoutList";
 import CompletePayout from "../pages/PayoutList/CompletePayout";
 import PushNotification from "../pages/PushNotification/PushNotification";
+
+// 🧍‍♂️ User list pages
 import AllUserList from "../pages/UserList/AllUserList/AllUserList";
+import MaleUserList from "../pages/UserList/MaleUserList/MaleUserList";
+import FemaleUserList from "../pages/UserList/FemaleUserList/FemaleUserList";
 import UserInfo from "../pages/UserList/UserInfo";
 import WalletManage from "../pages/UserList/WalletManage";
 import CoinManage from "../pages/UserList/CoinManage";
@@ -79,7 +88,7 @@ export default function AppRoutes() {
           <Route path="dashboard" element={<Dashboard />} />
 
           {/* Interest */}
-          <Route path="admin/profile" element={<AdminProfile />} />
+          <Route path="/profile" element={<AdminProfile />} />
           <Route path="interest/addinterest" element={<AddInterest />} />
           <Route path="interest/editinterest/:id" element={<AddInterest />} />
           <Route path="interest/listinterest" element={<ListInterest />} />
@@ -119,8 +128,12 @@ export default function AppRoutes() {
           <Route path="package/editpackage/:id" element={<AddPackage />} />
           <Route path="package/listpackage" element={<ListPackage />} />
 
-          {/* Staff + Payments */}
+          {/* Staff */}
+          <Route path="staff/addstaff" element={<AddStaff />} />
+          <Route path="staff/editstaff/:id" element={<AddStaff />} />
           <Route path="staff/liststaff" element={<ListStaff />} />
+
+          {/* Payments & Reports */}
           <Route path="paymentlist" element={<PaymentList />} />
           <Route path="reportlist" element={<ReportList />} />
 
@@ -133,8 +146,11 @@ export default function AppRoutes() {
           <Route path="payoutlist" element={<PayoutList />} />
           <Route path="payout/complete/:id" element={<CompletePayout />} />
 
-          {/* Users */}
+          {/* 🧍‍♂️ User Lists */}
           <Route path="userlist/alluserlist" element={<AllUserList />} />
+          <Route path="userlist/maleuserlist" element={<MaleUserList />} />
+          <Route path="userlist/femaleuserlist" element={<FemaleUserList />} />
+
           <Route path="user-info/:user_id" element={<UserInfo />} />
           <Route path="wallet/:user_id" element={<WalletManage />} />
           <Route path="coin/:user_id" element={<CoinManage />} />

@@ -11,6 +11,12 @@ import {
 } from "../../services/languageService";
 import { API_BASE } from "../../config/apiConfig";
 
+// ✅ Import the reusable custom toast
+import {
+  showCustomToast,
+  ToastContainerCustom,
+} from "../../components/CustomToast/CustomToast";
+
 const fixIconUrl = (icon) => {
   if (!icon) return "";
   if (typeof icon !== "string") return "";
@@ -52,7 +58,6 @@ export default function AddLanguage() {
         const items = Array.isArray(res?.data) ? res.data : [];
         const found = items.find((x) => x._id === id);
         if (!ignore && found) {
-          // backend may return title and imageUrl
           const title = found.title ?? found.name ?? "";
           const iconField = found.imageUrl ?? found.image ?? found.icon ?? "";
           const iconUrl = fixIconUrl(iconField);
@@ -121,7 +126,7 @@ export default function AddLanguage() {
 
       if (isEdit) {
         const patch = { id };
-        if (title !== initial.title) patch.name = title; // languageService maps name->title
+        if (title !== initial.title) patch.name = title;
         if (form.status !== initial.status) patch.status = form.status;
         if (form.iconFile) patch.iconFile = form.iconFile;
 
@@ -137,23 +142,20 @@ export default function AddLanguage() {
 
         const res = await updateLanguage(patch, { signal: ctrl.signal });
 
-        // build delta to send to list page
-        const delta = { id };
-        if ("name" in patch) delta.name = patch.name;
-        if ("status" in patch) delta.status = patch.status;
-        if (form.iconFile) {
-          const updated = res?.data || {};
-          delta.icon = updated.imageUrl ?? updated.image ?? updated.icon ?? null;
-        }
-
-        navigate("/language/listlanguage", { state: { updated: delta } });
+        // Update successful → show toast + navigate
+        showCustomToast("Language Updated Successfully!!", () =>
+          navigate("/language/listlanguage")
+        );
       } else {
-        // addLanguage expects { name, status, iconFile } and will send title->server
         await addLanguage(
           { name: title, status: form.status, iconFile: form.iconFile },
           { signal: ctrl.signal }
         );
-        navigate("/language/listlanguage");
+
+        // Add successful → show toast + navigate
+        showCustomToast("Language Added Successfully!!", () =>
+          navigate("/language/listlanguage")
+        );
       }
     } catch (e2) {
       if (e2?.name === "CanceledError" || e2?.code === "ERR_CANCELED") return;
@@ -164,7 +166,7 @@ export default function AddLanguage() {
         e2?.message ||
         "Save failed";
       setErr(msg);
-      console.log("Save error:", e2?.response?.status, e2?.response?.data);
+      console.error("Save error:", e2?.response?.status, e2?.response?.data);
     } finally {
       setSaving(false);
     }
@@ -235,10 +237,19 @@ export default function AddLanguage() {
             textColor="#fff"
             disabled={saving}
           >
-            {saving ? (isEdit ? "Updating..." : "Saving...") : isEdit ? "Edit Language" : "Add Language"}
+            {saving
+              ? isEdit
+                ? "Updating..."
+                : "Saving..."
+              : isEdit
+              ? "Edit Language"
+              : "Add Language"}
           </Button>
         </div>
       </form>
+
+      {/* Toast container — renders toasts */}
+      <ToastContainerCustom />
     </div>
   );
 }

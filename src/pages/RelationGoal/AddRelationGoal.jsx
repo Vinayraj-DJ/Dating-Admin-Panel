@@ -11,6 +11,9 @@ import {
   getAllRelationGoals,
 } from "../../services/relationGoalService";
 
+// Reusable toast
+import { showCustomToast, ToastContainerCustom } from "../../components/CustomToast/CustomToast";
+
 export default function AddRelationGoal() {
   const { id } = useParams();
   const isEdit = Boolean(id);
@@ -92,7 +95,11 @@ export default function AddRelationGoal() {
           },
           { signal: ctrl.signal }
         );
-        navigate("/relation/listrelationgoal");
+
+        // show toast then navigate after toast closes
+        showCustomToast("Relation Goal Added Successfully!", () =>
+          navigate("/relation/listrelationgoal")
+        );
       } catch (e2) {
         if (e2?.name !== "CanceledError" && e2?.code !== "ERR_CANCELED") {
           setErr(e2?.response?.data?.message || e2?.message || "Save failed");
@@ -137,7 +144,10 @@ export default function AddRelationGoal() {
       if ("subtitle" in patch) delta.subtitle = patch.subtitle;
       if ("status" in patch) delta.status = patch.status;
 
-      navigate("/relation/listrelationgoal", { state: { updated: delta } });
+      // show toast then navigate after toast closes (pass delta in state)
+      showCustomToast("Relation Goal Updated Successfully!", () =>
+        navigate("/relation/listrelationgoal", { state: { updated: delta } })
+      );
     } catch (e2) {
       if (e2?.name === "CanceledError" || e2?.code === "ERR_CANCELED") return;
       setErr(
@@ -192,7 +202,7 @@ export default function AddRelationGoal() {
         {!!notice && <div className={styles.notice}>{notice}</div>}
 
         <div className={styles.buttonContainer}>
-          <Button backgroundColor="var(--Primary_Color)" textColor="#fff">
+          <Button backgroundColor="var(--Primary_Color)" textColor="#fff" disabled={saving}>
             {saving
               ? isEdit
                 ? "Updating..."
@@ -203,6 +213,9 @@ export default function AddRelationGoal() {
           </Button>
         </div>
       </form>
+
+      {/* Toast container (renders toast notifications) */}
+      <ToastContainerCustom />
     </div>
   );
 }

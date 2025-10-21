@@ -53,61 +53,10 @@ textarea {
     box-sizing: border-box;
 }
 
-/* Make slug input visually distinct but consistent */
-.slugRow {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-/* Optionally arrange title + slug side-by-side on wide screens */
-@media (min-width: 900px) {
-    .slugRow.inline {
-        flex-direction: row;
-        gap: 16px;
-        align-items: flex-start;
-    }
-    .slugRow.inline .slugCol {
-        flex: 1 1 50%;
-    }
-}
-
-/* Specific slug input style */
-.slugInput {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
-    font-size: 13px;
-    padding: 10px 12px;
-    border-radius: 8px;
-    border: 1px solid #e0e0e0;
-    background: #fbfbfb;
-    color: #333;
-    letter-spacing: 0.2px;
-}
-
-/* Small helper text under slug */
-.slugHint {
-    font-size: 12px;
-    color: #6b6f76;
-    margin-top: 6px;
-}
-
-/* Small badge preview of slug */
-.slugPreview {
-    display: inline-block;
-    margin-left: 8px;
-    font-size: 12px;
-    color: #ffffff;
-    background: #6c63ff;
-    padding: 4px 8px;
-    border-radius: 999px;
-    vertical-align: middle;
-}
-
 /* Focus states */
 input:focus,
 select:focus,
-textarea:focus,
-.slugInput:focus {
+textarea:focus {
     border-color: rgba(108,99,255,0.55);
     box-shadow: 0 4px 14px rgba(108,99,255,0.08);
 }
@@ -123,21 +72,45 @@ label {
     color: #333;
 }
 
-/* submit button */
+/* ✅ NEW BUTTON STYLE — Matches “Add Plan” purple style */
 .submitBtn {
-    background-color: var(--Utility_Color1);
-    color: white;
+    display: inline-block;
+    background: linear-gradient(90deg, #7b2ff7 0%, #a24bff 100%);
+    color: #ffffff;
     border: none;
-    padding: 12px 24px;
-    font-weight: bold;
-    border-radius: 30px;
+    padding: 14px 40px;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1;
+    border-radius: 20px;
     cursor: pointer;
     align-self: flex-start;
-    transition: background-color 0.2s ease-in-out;
+    box-shadow:
+        0 10px 24px rgba(123, 47, 247, 0.14),
+        inset 0 -4px 12px rgba(255,255,255,0.06);
+    transition: transform 120ms ease, box-shadow 120ms ease;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .submitBtn:hover {
-    background-color: var(--Utility_Color1);
+    transform: translateY(-3px);
+    box-shadow:
+        0 14px 30px rgba(123, 47, 247, 0.18),
+        inset 0 -4px 12px rgba(255,255,255,0.06);
+}
+
+.submitBtn:active {
+    transform: translateY(-1px);
+    box-shadow:
+        0 8px 18px rgba(123, 47, 247, 0.12),
+        inset 0 -3px 10px rgba(255,255,255,0.04);
+}
+
+.submitBtn[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 /* error / notice */
@@ -151,14 +124,14 @@ label {
     font-size: 13px;
 }
 
-/* small utility spacing for form controls */
+/* spacing utility */
 .block {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-/* make editor area and inputs look consistent on small screens */
+/* responsive */
 @media (max-width: 600px) {
     .formCard {
         padding: 1rem;

@@ -18,6 +18,7 @@ export const ENDPOINTS = {
   ADMIN: {
     LOGIN: "/admin/login",
     PROFILE: "/admin/me",
+    USERS: "/admin/users"
   },
   MALE_USER: {
     REGISTER: "/male-user/register",

@@ -1,16 +1,16 @@
-.	container {
+.container {
 		padding: 1.5rem;
 		background-color: var(--Background_Color);
 		min-height: 91vh;
 	}
 
-.	heading {
+.heading {
 		font-size: 24px;
 		font-weight: 600;
 		margin-bottom: 1rem;
 	}
 
-.	form {
+.form {
 		background-color: #ffffff;
 		border-radius: 12px;
 		padding: 1.25rem;
@@ -19,12 +19,12 @@
 		max-width: 720px;
 	}
 
-.	sectionTitle {
+.sectionTitle {
 		font-weight: 600;
 		margin: 1rem 0 0.5rem;
 	}
 
-.	permGrid {
+.permGrid {
 		display: grid;
 		grid-template-columns: 1fr auto auto auto;
 		gap: 0.5rem 1rem;
@@ -35,26 +35,26 @@
 		margin-bottom: 1rem;
 	}
 
-.	permHead {
+.permHead {
 		font-size: 14px;
 		font-weight: 600;
 		color: #666;
 	}
 
-.	permRowLabel {
+.permRowLabel {
 		font-weight: 500;
 	}
 
-.	checkbox {
+.checkbox {
 		transform: scale(1.1);
 	}
 
-.	buttonContainer {
+.buttonContainer {
 		display: flex;
 		gap: 0.75rem;
 	}
 
-.	error {
+.error {
 		color: #c0392b;
 		margin: 0.5rem 0;
 	}

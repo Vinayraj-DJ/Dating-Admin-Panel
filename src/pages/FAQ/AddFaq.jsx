@@ -11,6 +11,9 @@ import {
   getAllFaqs,
 } from "../../services/faqService";
 
+// ✅ Reusable purple toast
+import { showCustomToast, ToastContainerCustom } from "../../components/CustomToast/CustomToast";
+
 export default function AddFAQ() {
   const { id } = useParams();
   const isEdit = Boolean(id);
@@ -91,7 +94,11 @@ export default function AddFAQ() {
           },
           { signal: ctrl.signal }
         );
-        navigate("/faq/listfaq");
+
+        // ✅ show toast then navigate after toast closes
+        showCustomToast("FAQ Added Successfully!", () =>
+          navigate("/faq/listfaq")
+        );
       } catch (e2) {
         if (e2?.name !== "CanceledError" && e2?.code !== "ERR_CANCELED") {
           setErr(e2?.response?.data?.message || e2?.message || "Save failed");
@@ -132,7 +139,10 @@ export default function AddFAQ() {
       if ("answer" in patch) delta.answer = patch.answer;
       if ("status" in patch) delta.status = patch.status;
 
-      navigate("/faq/listfaq", { state: { updated: delta } });
+      // ✅ show toast then navigate after toast closes
+      showCustomToast("FAQ Updated Successfully!", () =>
+        navigate("/faq/listfaq", { state: { updated: delta } })
+      );
     } catch (e2) {
       setErr(
         e2?.response?.data?.message ||
@@ -187,7 +197,7 @@ export default function AddFAQ() {
         {!!notice && <div className={styles.notice}>{notice}</div>}
 
         <div className={styles.buttonContainer}>
-          <Button backgroundColor="var(--Primary_Color)" textColor="#fff">
+          <Button backgroundColor="var(--Primary_Color)" textColor="#fff" disabled={saving}>
             {saving
               ? isEdit
                 ? "Updating..."
@@ -198,6 +208,9 @@ export default function AddFAQ() {
           </Button>
         </div>
       </form>
+
+      {/* ✅ Toast container for notifications */}
+      <ToastContainerCustom />
     </div>
   );
 }

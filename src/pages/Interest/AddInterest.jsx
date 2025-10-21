@@ -11,6 +11,9 @@ import {
 } from "../../services/interestService";
 import { API_BASE } from "../../config/apiConfig";
 
+// Import the reusable toast
+import { showCustomToast, ToastContainerCustom } from "../../components/CustomToast/CustomToast";
+
 const fixIconUrl = (icon) => {
   if (!icon) return "";
   if (typeof icon !== "string") return "";
@@ -135,15 +138,23 @@ export default function AddInterest() {
 
         // Note: updateInterestPartial accepts { id, name, status, iconFile }
         await updateInterestPartial(patch, { signal: ctrl.signal });
+
+        // Show toast and navigate after toast closes
+        showCustomToast("Interest Updated Successfully!!", () =>
+          navigate("/interest/listinterest")
+        );
       } else {
         // addInterest expects { name, status, iconFile } but backend expects title->handled by service
         await addInterest(
           { name: title, status: form.status, iconFile: form.iconFile },
           { signal: ctrl.signal }
         );
-      }
 
-      navigate("/interest/listinterest");
+        // Show toast and navigate after toast closes
+        showCustomToast("Interest Add Successfully!!", () =>
+          navigate("/interest/listinterest")
+        );
+      }
     } catch (e2) {
       if (e2?.name === "CanceledError" || e2?.code === "ERR_CANCELED") return;
       const msg =
@@ -238,6 +249,9 @@ export default function AddInterest() {
           </Button>
         </div>
       </form>
+
+      {/* Toast container (renders toasts). Put it once per page or globally in App.jsx */}
+      <ToastContainerCustom />
     </div>
   );
 }

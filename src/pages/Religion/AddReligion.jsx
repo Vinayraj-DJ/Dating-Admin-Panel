@@ -10,12 +10,17 @@ import {
   getAllReligions,
 } from "../../services/religionService";
 
+// ✅ Import the reusable toast
+import {
+  showCustomToast,
+  ToastContainerCustom,
+} from "../../components/CustomToast/CustomToast";
+
 /**
  * Note:
  * - Backend returns `title` and `status` (lowercase 'publish'/'unpublish' in your Postman).
  * - Your service likely expects a `name` argument which it maps to `title` when sending to server.
- *   To keep things simple we use `title` in the UI and pass { name: title } into the service,
- *   preserving the service contract you already have.
+ *   To keep things simple we use `title` in the UI and pass { name: title } into the service.
  */
 
 export default function AddReligion() {
@@ -105,28 +110,33 @@ export default function AddReligion() {
           return;
         }
 
-        const res = await updateReligion(patch, { signal: ctrl.signal });
+        await updateReligion(patch, { signal: ctrl.signal });
 
-        // minimal info back for in-place patch in list
-        const delta = { id };
-        if ("name" in patch) delta.name = patch.name;
-        if ("status" in patch) delta.status = patch.status;
-
-        navigate("/religion/listreligion", { state: { updated: delta } });
+        // ✅ Show toast & navigate after close
+        showCustomToast("Religion Updated Successfully!!", () =>
+          navigate("/religion/listreligion")
+        );
       } else {
-        // addReligion expects { name, status, ... } (it will send title->server)
-        await addReligion({ name: title, status: form.status }, { signal: ctrl.signal });
-        navigate("/religion/listreligion");
+        await addReligion(
+          { name: title, status: form.status },
+          { signal: ctrl.signal }
+        );
+
+        // ✅ Show toast & navigate after close
+        showCustomToast("Religion Added Successfully!!", () =>
+          navigate("/religion/listreligion")
+        );
       }
     } catch (e2) {
       if (e2?.name === "CanceledError" || e2?.code === "ERR_CANCELED") return;
       const msg =
         e2?.response?.data?.message ||
-        (e2?.response?.data?.errors && JSON.stringify(e2.response.data.errors)) ||
+        (e2?.response?.data?.errors &&
+          JSON.stringify(e2.response.data.errors)) ||
         e2?.message ||
         "Save failed";
       setErr(msg);
-      console.log("Save error:", e2?.response?.status, e2?.response?.data);
+      console.error("Save error:", e2?.response?.status, e2?.response?.data);
     } finally {
       setSaving(false);
     }
@@ -137,7 +147,7 @@ export default function AddReligion() {
       <h2 className={styles.heading}>Religion Management</h2>
 
       <form className={styles.form} onSubmit={submit} noValidate>
-        {/* Controlled Title input (replaced HeadingAndData to avoid event-shape mismatches) */}
+        {/* Controlled Title input */}
         <div className={styles.block}>
           <label className={styles.label}>Religion Title</label>
           <input
@@ -164,7 +174,7 @@ export default function AddReligion() {
           }}
           options={[
             { value: "publish", label: "Publish" },
-            { value: "unpublish", label: "UnPublish" }, // label displays as needed; value is normalized
+            { value: "unpublish", label: "UnPublish" },
           ]}
           placeholder="Select Status"
           required
@@ -174,11 +184,24 @@ export default function AddReligion() {
         {!!notice && <div className={styles.notice}>{notice}</div>}
 
         <div className={styles.buttonContainer}>
-          <Button backgroundColor="var(--Primary_Color)" textColor="#fff" disabled={saving}>
-            {saving ? (isEdit ? "Updating..." : "Saving...") : isEdit ? "Edit Religion" : "Add Religion"}
+          <Button
+            backgroundColor="var(--Primary_Color)"
+            textColor="#fff"
+            disabled={saving}
+          >
+            {saving
+              ? isEdit
+                ? "Updating..."
+                : "Saving..."
+              : isEdit
+              ? "Edit Religion"
+              : "Add Religion"}
           </Button>
         </div>
       </form>
+
+      {/* ✅ Toast container */}
+      <ToastContainerCustom />
     </div>
   );
 }

@@ -1,3 +1,4 @@
+// src/pages/Package/AddPackage.jsx
 import React, { useEffect, useState } from "react";
 import styles from "./AddPackage.module.css";
 import { useParams, useNavigate } from "react-router-dom";
@@ -9,6 +10,12 @@ import {
   updatePackagePartial,
   getAllPackages,
 } from "../../services/packageService";
+
+// ✅ Import custom toast
+import {
+  showCustomToast,
+  ToastContainerCustom,
+} from "../../components/CustomToast/CustomToast";
 
 export default function AddPackage() {
   const navigate = useNavigate();
@@ -50,7 +57,9 @@ export default function AddPackage() {
         // Accept either found.totalCoin or found.coin (API may use coin)
         const next = {
           totalCoin: String(
-            typeof found.totalCoin !== "undefined" ? found.totalCoin : found.coin ?? ""
+            typeof found.totalCoin !== "undefined"
+              ? found.totalCoin
+              : found.coin ?? ""
           ),
           amount: String(found.amount ?? ""),
           status: found.status || "UnPublish",
@@ -97,7 +106,11 @@ export default function AddPackage() {
           },
           { signal: ctrl.signal }
         );
-        navigate("/package/listpackage");
+
+        // ✅ Show toast then navigate
+        showCustomToast("Package Added Successfully!", () =>
+          navigate("/package/listpackage")
+        );
       } catch (e2) {
         setErr(e2?.response?.data?.message || e2?.message || "Save failed");
       } finally {
@@ -130,10 +143,13 @@ export default function AddPackage() {
     try {
       setSaving(true);
       await updatePackagePartial(patch);
-      // send a tiny delta for in-place list patch
-      navigate("/package/listpackage", {
-        state: { updated: { id, ...patch } },
-      });
+
+      const delta = { id, ...patch };
+
+      // ✅ Show toast and navigate after it closes
+      showCustomToast("Package Updated Successfully!", () =>
+        navigate("/package/listpackage", { state: { updated: delta } })
+      );
     } catch (e2) {
       setErr(e2?.response?.data?.message || e2?.message || "Update failed");
     } finally {
@@ -181,7 +197,11 @@ export default function AddPackage() {
         {!!notice && <div className={styles.notice}>{notice}</div>}
 
         <div className={styles.buttonContainer}>
-          <Button backgroundColor="var(--Primary_Color)" textColor="#fff">
+          <Button
+            backgroundColor="var(--Primary_Color)"
+            textColor="#fff"
+            disabled={saving}
+          >
             {saving
               ? isEdit
                 ? "Updating..."
@@ -192,6 +212,9 @@ export default function AddPackage() {
           </Button>
         </div>
       </form>
+
+      {/* ✅ Toast container for notifications */}
+      <ToastContainerCustom />
     </div>
   );
 }

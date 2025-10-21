@@ -31,11 +31,11 @@ useEffect(() => {
       toRoute: "",
       icon: <RxDashboard size={20} />,
     },
-    {
-      label: "Admin Profile",
-      toRoute: "/admin/profile",
-      icon: <RxDashboard size={20} />,
-    },
+    // {
+    //   label: "Admin Profile",
+    //   toRoute: "/admin/profile",
+    //   icon: <RxDashboard size={20} />,
+    // },
     {
       label: "Interest",
       icon: <PiUsersThreeDuotone size={24} />,

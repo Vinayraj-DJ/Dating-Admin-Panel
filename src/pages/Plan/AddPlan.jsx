@@ -12,6 +12,9 @@ import {
   getAllPlans,
 } from "../../services/planService";
 
+// Reusable toast
+import { showCustomToast, ToastContainerCustom } from "../../components/CustomToast/CustomToast";
+
 export default function AddPlan() {
   const { id } = useParams();
   const isEdit = Boolean(id);
@@ -102,8 +105,7 @@ export default function AddPlan() {
 
     if (!form.title.trim()) return setErr("Plan title is required");
     if (!form.amount.toString().trim()) return setErr("Amount is required");
-    if (!form.dayLimit.toString().trim())
-      return setErr("Day limit is required");
+    if (!form.dayLimit.toString().trim()) return setErr("Day limit is required");
 
     // CREATE
     if (!isEdit) {
@@ -125,7 +127,9 @@ export default function AddPlan() {
           },
           { signal: ctrl.signal }
         );
-        navigate("/plan/listplan");
+
+        // show toast then navigate after toast closes
+        showCustomToast("Plan Added Successfully!", () => navigate("/plan/listplan"));
       } catch (e2) {
         setErr(e2?.response?.data?.message || e2?.message || "Save failed");
       } finally {
@@ -152,8 +156,14 @@ export default function AddPlan() {
     try {
       setSaving(true);
       await updatePlanPartial(patch);
+
       // delta used by the list page to patch the row in-place
-      navigate("/plan/listplan", { state: { updated: { id, ...patch } } });
+      const delta = { id, ...patch };
+
+      // show toast then navigate after toast closes (pass state)
+      showCustomToast("Plan Updated Successfully!", () =>
+        navigate("/plan/listplan", { state: { updated: delta } })
+      );
     } catch (e2) {
       setErr(e2?.response?.data?.message || e2?.message || "Update failed");
     } finally {
@@ -247,7 +257,7 @@ export default function AddPlan() {
         {!!notice && <div className={styles.notice}>{notice}</div>}
 
         <div className={styles.buttonContainer}>
-          <Button backgroundColor="var(--Primary_Color)" textColor="#fff">
+          <Button backgroundColor="var(--Primary_Color)" textColor="#fff" disabled={saving}>
             {saving
               ? isEdit
                 ? "Updating..."
@@ -258,6 +268,9 @@ export default function AddPlan() {
           </Button>
         </div>
       </form>
+
+      {/* Toast container (renders toast notifications) */}
+      <ToastContainerCustom />
     </div>
   );
 }

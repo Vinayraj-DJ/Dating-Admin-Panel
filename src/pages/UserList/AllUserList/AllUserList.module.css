@@ -1,54 +1,65 @@
+/* AllUserList.module.css (add/merge) */
+
 .container {
-    padding: 20px;
+  padding: 16px;
 }
 
 .heading {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
+  font-size: 1.25rem;
+  margin-bottom: 12px;
 }
 
 .tableCard {
-    max-width: 1150px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
-    padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 
 .searchWrapper {
-    margin-bottom: 16px;
-    display: flex;
-    justify-content: flex-end;
+  margin-bottom: 12px;
 }
 
 .tableWrapper {
-    overflow-x: auto;
+  overflow-x: auto;
 }
 
-.badge {
-    padding: 4px 10px;
-    border-radius: 6px;
-    color: white;
-    font-size: 13px;
-    font-weight: 500;
+/* badges / buttons */
+.badgeButton {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 110px;
+  text-align: center;
 }
 
-.red {
-    background-color: #f44336;
-}
-
+/* color classes (adjust to your theme) */
 .green {
-    background-color: #4caf50;
+  color: #046307;
 }
-
+.red {
+  color: #a00;
+}
 .gray {
-    background-color: #9e9e9e;
+  color: #666;
 }
 
+/* info icon / image */
+.infoIcon img {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.infoIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 .image {
-    width: 40px;
-    height: 40px;
-    border-radius: 4px;
-    object-fit: cover;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
 }

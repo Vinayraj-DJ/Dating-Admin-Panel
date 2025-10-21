@@ -8,6 +8,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { addGift, updateGift, getAllGifts } from "../../services/giftService";
 import { API_BASE } from "../../config/apiConfig";
 
+// Reusable toast
+import { showCustomToast, ToastContainerCustom } from "../../components/CustomToast/CustomToast";
+
 const fixIconUrl = (icon) =>
   !icon ? "" : /^https?:\/\//i.test(icon) ? icon : `${API_BASE}/${String(icon).replace(/^\/+/, "")}`;
 
@@ -76,7 +79,9 @@ export default function AddGift() {
       try {
         setSaving(true);
         await addGift({ coin: String(form.coin), status: form.status, iconFile: form.iconFile }, { signal: ctrl.signal });
-        navigate("/gift/listgift");
+
+        // show toast then navigate after toast closes
+        showCustomToast("Gift Added Successfully!", () => navigate("/gift/listgift"));
       } catch (e2) {
         console.error("Create Gift Error:", e2);
         setErr(e2?.response?.data?.message || e2?.message || "Save failed");
@@ -118,7 +123,11 @@ export default function AddGift() {
       // get updated icon from response if present
       const returnedIcon = updated.icon ?? updated.image ?? updated.imageUrl ?? updated.path ?? null;
       if (patch.iconFile) delta.icon = returnedIcon;
-      navigate("/gift/listgift", { state: { updated: delta } });
+
+      // show toast then navigate after toast closes (pass state)
+      showCustomToast("Gift Updated Successfully!", () =>
+        navigate("/gift/listgift", { state: { updated: delta } })
+      );
     } catch (e2) {
       console.error("Update error:", e2);
       setErr(e2?.response?.data?.message || e2?.message || "Update failed");
@@ -162,11 +171,14 @@ export default function AddGift() {
         {!!notice && <div className={styles.notice}>{notice}</div>}
 
         <div className={styles.buttonContainer}>
-          <Button backgroundColor="var(--Primary_Color)" textColor="#fff" type="submit">
+          <Button backgroundColor="var(--Primary_Color)" textColor="#fff" type="submit" disabled={saving}>
             {saving ? (isEdit ? "Updating..." : "Saving...") : isEdit ? "Edit Gift" : "Add Gift"}
           </Button>
         </div>
       </form>
+
+      {/* Toast container (renders toast notifications) */}
+      <ToastContainerCustom />
     </div>
   );
 }
