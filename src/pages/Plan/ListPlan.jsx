@@ -21,6 +21,20 @@ export default function ListPlan() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
+  // normalize server item: pull toggleButtons fields to top-level for UI convenience
+  const normalizeItem = (it) => {
+    if (!it) return it;
+    const tb = it.toggleButtons || {};
+    return {
+      ...it,
+      filterInclude: typeof it.filterInclude !== "undefined" ? it.filterInclude : !!tb.filterInclude,
+      audioVideo: typeof it.audioVideo !== "undefined" ? it.audioVideo : !!tb.audioVideo,
+      directChat: typeof it.directChat !== "undefined" ? it.directChat : !!tb.directChat,
+      chat: typeof it.chat !== "undefined" ? it.chat : !!tb.chat,
+      likeMenu: typeof it.likeMenu !== "undefined" ? it.likeMenu : !!tb.likeMenu,
+    };
+  };
+
   // load
   useEffect(() => {
     const ctrl = new AbortController();
@@ -28,9 +42,13 @@ export default function ListPlan() {
     setLoading(true);
     setErr("");
     getAllPlans({ signal: ctrl.signal })
-      .then(
-        (res) => active && setItems(Array.isArray(res?.data) ? res.data : [])
-      )
+      .then((res) => {
+        if (!active) return;
+        // server might return { data: [...] } or [...], handle both
+        const payload = Array.isArray(res?.data) ? res.data : Array.isArray(res) ? res : res?.data || res;
+        const arr = Array.isArray(payload) ? payload.map(normalizeItem) : [];
+        setItems(arr);
+      })
       .catch((e) => {
         if (e?.name === "CanceledError" || e?.code === "ERR_CANCELED") return;
         if (active)
@@ -53,16 +71,16 @@ export default function ListPlan() {
         if (it._id !== upd.id) return it;
         const next = { ...it };
         const f = {};
+
+        // when server returns updated delta, it may contain toggle fields or toggleButtons;
+        // treat toggles as top-level for UI
+        const toggles = ["filterInclude", "audioVideo", "directChat", "chat", "likeMenu"];
         for (const k of [
           "title",
           "amount",
           "dayLimit",
           "description",
-          "filterInclude",
-          "audioVideo",
-          "directChat",
-          "chat",
-          "likeMenu",
+          ...toggles,
           "status",
         ]) {
           if (typeof upd[k] !== "undefined" && upd[k] !== it[k]) {
@@ -70,6 +88,17 @@ export default function ListPlan() {
             f[k] = true;
           }
         }
+
+        // if server accidentally sent toggleButtons object in `upd`, merge its values too
+        if (upd.toggleButtons && typeof upd.toggleButtons === "object") {
+          for (const t of toggles) {
+            if (typeof upd.toggleButtons[t] !== "undefined" && upd.toggleButtons[t] !== it[t]) {
+              next[t] = upd.toggleButtons[t];
+              f[t] = true;
+            }
+          }
+        }
+
         if (Object.keys(f).length) {
           setHighlight((h) => ({ ...h, [upd.id]: f }));
           setTimeout(() => {
@@ -85,6 +114,23 @@ export default function ListPlan() {
 
     navigate(".", { replace: true, state: {} });
   }, [location.state, navigate]);
+
+  const headings = useMemo(
+    () => [
+      { title: "Sr No.", accessor: "sr" },
+      { title: "Plan Title", accessor: "title" },
+      { title: "Plan Amount", accessor: "amount" },
+      { title: "Day Limit", accessor: "dayLimit" },
+      { title: "Filter Include ?", accessor: "filterInclude" },
+      { title: "Direct Chat ?", accessor: "directChat" },
+      { title: "Chat ?", accessor: "chat" },
+      { title: "Like Menu ?", accessor: "likeMenu" },
+      { title: "Audio Video ?", accessor: "audioVideo" },
+      { title: "Plan Status", accessor: "status" },
+      { title: "Action", accessor: "action" },
+    ],
+    []
+  );
 
   const filtered = useMemo(() => {
     const q = searchTerm.trim().toLowerCase();
@@ -113,23 +159,6 @@ export default function ListPlan() {
     }
   };
 
-  const headings = useMemo(
-    () => [
-      { title: "Sr No.", accessor: "sr" },
-      { title: "Plan Title", accessor: "title" },
-      { title: "Plan Amount", accessor: "amount" },
-      { title: "Day Limit", accessor: "dayLimit" },
-      { title: "Filter Include ?", accessor: "filterInclude" },
-      { title: "Direct Chat ?", accessor: "directChat" },
-      { title: "Chat ?", accessor: "chat" },
-      { title: "Like Menu ?", accessor: "likeMenu" },
-      { title: "Audio Video ?", accessor: "audioVideo" },
-      { title: "Plan Status", accessor: "status" },
-      { title: "Action", accessor: "action" },
-    ],
-    []
-  );
-
   const yesNo = (v) => (v ? "Yes" : "No");
 
   const columnData = useMemo(
@@ -145,12 +174,12 @@ export default function ListPlan() {
           ),
           amount: (
             <span className={hl.amount ? styles.flash : ""}>
-              {it.amount || "-"}
+              {it.amount ?? "-"}
             </span>
           ),
           dayLimit: (
             <span className={hl.dayLimit ? styles.flash : ""}>
-              {it.dayLimit || "-"}
+              {it.dayLimit ?? "-"}
             </span>
           ),
           filterInclude: (

@@ -63,8 +63,11 @@ export default function ListRelationGoal() {
           next.title = upd.title;
           flags.title = true;
         }
-        if ("subtitle" in upd && upd.subtitle !== it.subtitle) {
-          next.subtitle = upd.subtitle;
+        if ("subtitle" in upd && upd.subtitle !== (it.subTitle ?? it.subtitle)) {
+          // update the front-end-friendly `subtitle` by storing as `subTitle` if backend uses that
+          // keep representation consistent: prefer existing key if backend sent subTitle
+          if (typeof it.subTitle !== "undefined") next.subTitle = upd.subtitle;
+          else next.subtitle = upd.subtitle;
           flags.subtitle = true;
         }
         if ("status" in upd && upd.status !== it.status) {
@@ -107,7 +110,7 @@ export default function ListRelationGoal() {
         String(it.title || "")
           .toLowerCase()
           .includes(q) ||
-        String(it.subtitle || "")
+        String(it.subTitle ?? it.subtitle ?? "")
           .toLowerCase()
           .includes(q)
     );
@@ -137,7 +140,7 @@ export default function ListRelationGoal() {
           ),
           subtitle: (
             <span className={hl.subtitle ? styles.flash : ""}>
-              {it.subtitle || "-"}
+              { (it.subTitle ?? it.subtitle) || "-" }
             </span>
           ),
           status: (

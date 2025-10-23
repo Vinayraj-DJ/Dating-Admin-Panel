@@ -50,7 +50,8 @@ export default function AddRelationGoal() {
         if (!ignore && found) {
           const data = {
             title: found.title || "",
-            subtitle: found.subtitle || "",
+            // accept either `subTitle` (from backend) or `subtitle` (older/alternate)
+            subtitle: (found.subTitle ?? found.subtitle) || "",
             status: found.status || "Publish",
           };
           setInitial(data);

@@ -14,10 +14,11 @@ export async function getAllRelationGoals({ signal } = {}) {
 }
 
 // POST create relation goal (JSON)
-export async function addRelationGoal({ title, subTitle = "", status }, { signal } = {}) {
+// Accepts `subtitle` (friendly name) and maps to `subTitle` for API
+export async function addRelationGoal({ title, subtitle = "", status }, { signal } = {}) {
   const payload = {
     title: String(title || "").trim(),
-    subTitle: String(subTitle || "").trim(),
+    subTitle: String(subtitle || "").trim(), // map to API field expected by backend
     status: normalizeStatus(status),
   };
   const res = await apiClient.post(endpoints.base, payload, {
@@ -28,10 +29,11 @@ export async function addRelationGoal({ title, subTitle = "", status }, { signal
 }
 
 // PUT partial update -> PUT /admin/relation-goals/:id  (body = JSON of changed fields)
-export async function updateRelationGoalPartial({ id, title, subTitle, status }, { signal } = {}) {
+// Accepts `subtitle` and maps to `subTitle`
+export async function updateRelationGoalPartial({ id, title, subtitle, status }, { signal } = {}) {
   const body = {};
   if (typeof title !== "undefined") body.title = String(title).trim();
-  if (typeof subTitle !== "undefined") body.subTitle = String(subTitle).trim();
+  if (typeof subtitle !== "undefined") body.subTitle = String(subtitle).trim(); // map to API field
   if (typeof status !== "undefined") body.status = normalizeStatus(status);
 
   const res = await apiClient.put(`${endpoints.base}/${encodeURIComponent(id)}`, body, {

@@ -52,6 +52,9 @@ export default function AddPlan() {
   const [err, setErr] = useState("");
   const [notice, setNotice] = useState("");
 
+  // helper to safely read booleans from toggleButtons
+  const bool = (v) => !!v;
+
   // preload when editing
   useEffect(() => {
     if (!isEdit) return;
@@ -60,23 +63,28 @@ export default function AddPlan() {
     (async () => {
       try {
         const res = await getAllPlans({ signal: ctrl.signal });
-        const items = Array.isArray(res?.data) ? res.data : [];
+        // support responses where server wraps data in `data` or returns array directly
+        const payload = Array.isArray(res?.data) ? res.data : Array.isArray(res) ? res : res?.data || res;
+        const items = Array.isArray(payload) ? payload : [];
         const found = items.find((p) => p._id === id);
         if (!active) return;
         if (!found) {
           setErr("Item not found.");
           return;
         }
+
+        // read toggleButtons -> map to top-level booleans
+        const tb = found.toggleButtons || {};
         const next = {
           title: found.title || "",
           amount: String(found.amount ?? ""),
           dayLimit: String(found.dayLimit ?? ""),
           description: found.description || "",
-          filterInclude: !!found.filterInclude,
-          audioVideo: !!found.audioVideo,
-          directChat: !!found.directChat,
-          chat: !!found.chat,
-          likeMenu: !!found.likeMenu,
+          filterInclude: bool(tb.filterInclude),
+          audioVideo: bool(tb.audioVideo),
+          directChat: bool(tb.directChat),
+          chat: bool(tb.chat),
+          likeMenu: bool(tb.likeMenu),
           status: found.status || "UnPublish",
         };
         setInitial(next);
