@@ -1,0 +1,4 @@
+.container { padding: 1.5rem; background: var(--Background_Color, #f7f7f7); min-height: 90vh; }
+.heading { font-size: 22px; font-weight: 700; margin-bottom: 1.25rem; color:#222; }
+.form { max-width: 1200px; margin: 0 auto; }
+.error { color:#c0392b; margin-top:8px; }

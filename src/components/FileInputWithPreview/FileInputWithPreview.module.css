@@ -1,0 +1,8 @@
+.wrap { display:flex; flex-direction:column; }
+.label { font-weight:600; margin-bottom:6px; color:#222; }
+.row { display:flex; gap:1rem; align-items:center; }
+.file { padding:6px 8px; border-radius:6px; border:1px solid #eee; background:#fafafa; }
+.previewWrap { display:flex; flex-direction:column; gap:6px; align-items:flex-start; }
+.preview { height:48px; width:auto; border-radius:6px; border:1px solid #eee; }
+.remove { background:#f5f5f5; border:0; padding:6px 8px; border-radius:6px; cursor:pointer; }
+.hint { color:#777; font-size:13px; margin-top:6px; }

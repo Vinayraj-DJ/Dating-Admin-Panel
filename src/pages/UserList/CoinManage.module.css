@@ -1,145 +1,276 @@
+/* CoinManage.module.css (full file) */
+
+/* ---------- Page / Card layout ---------- */
 .container {
-    padding: 2rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #111827;
 }
 
 .pageTitle {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 18px;
+  color: #0f172a;
 }
 
 .card {
-    background-color: #fff;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
+  background-color: #fff;
+  padding: 1.25rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+  margin-bottom: 1.5rem;
 }
 
+/* ---------- Header row / Tabs ---------- */
 .headerRow {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .tabs {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 0.6rem;
 }
 
 .tabBtn {
-    background-color: #f1f1f1;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    font-weight: 600;
-    color: #555;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  background-color: #f1f5f9;
+  border: none;
+  padding: 0.55rem 0.9rem;
+  border-radius: 8px;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.18s ease, transform 0.12s ease;
 }
 
 .tabBtn:hover {
-    background-color: #e0e0e0;
+  background-color: #e6eef7;
+  transform: translateY(-1px);
 }
 
 .active {
-    background-color: #4caf50;
-    color: #fff;
+  background-color: #8e2de2; /* purple accent if active */
+  color: white;
 }
 
+/* Balance badge */
 .balanceBadge {
-    font-weight: 600;
-    background-color: #f5f5f5;
-    padding: 0.4rem 0.8rem;
-    border-radius: 8px;
+  font-weight: 700;
+  background-color: #eef2ff;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  color: #0f172a;
+  white-space: nowrap;
 }
 
+/* ---------- Inputs / Actions ---------- */
 .inputGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.inputGroup label {
+  font-weight: 600;
+  color: #0f172a;
 }
 
 .inputGroup input {
-    padding: 0.6rem 1rem;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+  padding: 0.6rem 0.9rem;
+  font-size: 15px;
+  border: 1px solid #e6e9ee;
+  border-radius: 8px;
+  outline: none;
+  transition: box-shadow 0.12s ease, border-color 0.12s ease;
 }
 
+.inputGroup input:focus {
+  border-color: #8e2de2;
+  box-shadow: 0 3px 10px rgba(142,45,226,0.06);
+}
+
+/* Action buttons */
 .actionBtn {
-    border: none;
-    padding: 0.75rem 1.2rem;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
+  border: none;
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.actionBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .addBtn {
-    background-color: #4caf50;
-    color: white;
+  background-color: #7a34eb;
+  color: #fff;
 }
 
 .subtractBtn {
-    background-color: #f44336;
-    color: white;
+  background-color: #f82354;
+  color: #fff;
 }
 
+/* ---------- Log Title / Card ---------- */
 .logTitle {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 1rem;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: #111827;
 }
 
 .logCard {
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    padding: 1rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
 }
 
+/* ---------- Table ---------- */
 .tableWrapper {
-    overflow-x: auto;
+  overflow-x: auto;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 15px;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  table-layout: auto;
 }
 
-th,
-td {
-    padding: 0.75rem;
-    text-align: left;
-    border-bottom: 1px solid #eee;
+thead th {
+  padding: 16px 20px;
+  text-align: left;
+  font-weight: 800;
+  color: #111827;
+  background: #fbfbfb;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  white-space: nowrap;
 }
 
-th {
-    background-color: #f9f9f9;
+tbody td {
+  padding: 16px 20px;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(0,0,0,0.03);
+  color: #374151;
 }
 
+/* empty / loading row */
 .emptyRow {
-    text-align: center;
-    padding: 2rem;
-    color: #888;
+  text-align: center;
+  padding: 28px;
+  color: #9ca3af;
 }
 
-.green {
-    color: green;
-    font-weight: bold;
+/* Hover subtle effect */
+tbody tr:hover {
+  filter: brightness(0.997);
 }
 
-.red {
-    color: red;
-    font-weight: bold;
+/* ---------- Credit / Debit styling (rows & cells) ---------- */
+/* row tints */
+.rowCredit {
+  background: rgba(16,185,129,0.03); /* very light green */
+}
+
+.rowDebit {
+  background: rgba(239,68,68,0.03); /* very light red/pink */
+}
+
+/* amount cell text */
+.creditCell {
+  color: #16a34a;  /* green */
+  font-weight: 800;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.debitCell {
+  color: #dc2626;  /* red */
+  font-weight: 800;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+/* if you render amounts with +/- in JS, keep as-is. No ::before is added here. */
+
+/* message & type/date muted */
+td:nth-child(3) { /* message */
+  color: #0f172a;
+  font-weight: 600;
+}
+td:nth-child(4), td:nth-child(5) { /* type, date */
+  color: #6b7280;
+  font-weight: 600;
+}
+
+/* ---------- Toast container (optional) ---------- */
+.toastContainerCustom {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 9999;
+}
+
+.toastCustom {
+  background: #fff;
+  border-left: 5px solid #16a34a;
+  padding: 0.6rem 0.9rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  font-weight: 700;
+}
+
+.toastCustom.error {
+  border-left-color: #dc2626;
+}
+
+/* ---------- Bottom row: info + pager (added) ---------- */
+.bottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: #fff;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 0 0 12px 12px;
+}
+.infoText {
+  font-size: 15px;
+  color: #374151;
+  font-weight: 500;
+}
+
+/* ---------- Responsive tweaks ---------- */
+@media (max-width: 900px) {
+  .pageTitle { font-size: 22px; }
+  thead th, tbody td { padding: 12px 10px; font-size: 14px; }
+  .balanceBadge { padding: 8px 12px; }
+  .bottomRow { flex-direction: column; gap: 12px; text-align: center; }
+}
+
+@media (max-width: 520px) {
+  .headerRow { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .tabs { flex-wrap: wrap; }
+  .actionBtn { width: 100%; justify-content: center; }
 }

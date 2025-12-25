@@ -1,24 +1,20 @@
-// const PROD_BASE = (process.env.REACT_APP_API_BASE_URL || "").replace(/\/+$/,"");
-// export const API_BASE = process.env.NODE_ENV === "development" ? "/api" : PROD_BASE;
-
-// export const ENDPOINTS = {
-//   AUTH: { LOGIN: "/admin/auth/login" },
-//   INTEREST: { ROOT: "/admin/interest" }, // GET/POST/PUT/DELETE on same path
-// };
 
 
-// Set the production base URL, removing trailing slashes
-const PROD_BASE = (process.env.REACT_APP_API_BASE_URL || "https://friend-circle-nine.vercel.app").replace(/\/+$/, "");
+// src/config/apiConfig.js
 
-// Use "/api" in development, otherwise use production base
+// Production base URL (no trailing slash)
+const PROD_BASE = (process.env.REACT_APP_API_BASE_URL || "https://friend-circle-2.vercel.app").replace(/\/+$/, "");
+
+// If development → use /api (proxy), otherwise → use PROD_BASE
 export const API_BASE = process.env.NODE_ENV === "development" ? "/api" : PROD_BASE;
 
-// Updated endpoints based on Postman collection
+// Updated endpoints based on backend structure
 export const ENDPOINTS = {
   ADMIN: {
     LOGIN: "/admin/login",
     PROFILE: "/admin/me",
-    USERS: "/admin/users"
+    USERS: "/admin/users",
+    
   },
   MALE_USER: {
     REGISTER: "/male-user/register",
@@ -29,31 +25,31 @@ export const ENDPOINTS = {
   AGENCY: {
     REGISTER: "/agency/register",
   },
-  INTERESTS: { 
-    ROOT: "/admin/interests" 
+  INTERESTS: {
+    ROOT: "/admin/interests",
   },
   GIFTS: {
-    ROOT: "/admin/gifts"
+    ROOT: "/admin/gifts",
   },
   RELIGIONS: {
-    ROOT: "/admin/religions"
+    ROOT: "/admin/religions",
   },
   FAQS: {
-    ROOT: "/admin/faqs"
+    ROOT: "/admin/faqs",
   },
   PLANS: {
-    ROOT: "/admin/plans"
+    ROOT: "/admin/plans",
   },
   PACKAGES: {
-    ROOT: "/admin/packages"
+    ROOT: "/admin/packages",
   },
   LANGUAGES: {
-    ROOT: "/admin/languages"
+    ROOT: "/admin/languages",
   },
   PAGES: {
-    ROOT: "/admin/pages"
+    ROOT: "/admin/pages",
   },
   RELATION_GOALS: {
-    ROOT: "/admin/relation-goals"
+    ROOT: "/admin/relation-goals",
   },
 };

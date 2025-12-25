@@ -99,6 +99,17 @@ export default function AddStaff() {
       <form className={styles.form} onSubmit={onSubmit}>
         {!isEdit && (
           <HeadingAndData label="Email" name="email" value={form.email} onChange={onChange} placeholder="staff@example.com" required />
+//          <HeadingAndData
+//   label="Email"
+//   name="email"
+//   value={form.email}
+//   onChange={onChange}
+//   placeholder="staff@example.com"
+//   required
+//   disabled={isEdit}
+// />
+
+
         )}
         <HeadingAndData label="Password" name="password" value={form.password} onChange={onChange} placeholder={isEdit ? "Leave blank to keep" : "Choose a password"} required={!isEdit} />
         <HeadingAndDropDown label="Status" name="status" value={form.status} onChange={onChange} options={[{ value: "publish", label: "Publish" }, { value: "unpublish", label: "Unpublish" }]} />

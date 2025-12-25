@@ -1,27 +1,36 @@
+
+// src/services/adminService.js
 import apiClient from "./apiClient";
 import { ENDPOINTS } from "../config/apiConfig";
 
-// GET: /admin/me → returns admin profile
+/**
+ * Fetch Admin Profile
+ * GET /admin/me
+ */
 export async function getAdminProfile({ signal } = {}) {
   const res = await apiClient.get(ENDPOINTS.ADMIN.PROFILE, { signal });
-  return res.data; // { success, message, data: { ...profile } }
+  return res.data; // { success, data: {...} }
 }
 
-// PUT: /admin/me → update allowed fields (e.g., name, password)
+/**
+ * Update Admin Profile
+ * PUT /admin/me
+ */
 export async function updateAdminProfile(payload, { signal } = {}) {
-  // Only send known fields if provided
   const body = {};
-  if (typeof payload?.name !== "undefined") body.name = String(payload.name);
-  if (typeof payload?.password !== "undefined") body.password = String(payload.password);
+
+  if (payload?.name) body.name = payload.name;
+  if (payload?.password) body.password = payload.password;
 
   const res = await apiClient.put(ENDPOINTS.ADMIN.PROFILE, body, { signal });
-  return res.data; // { success, message, data }
+  return res.data; // { success, data: {...} }
 }
 
-// DELETE: /admin/me → delete admin account (rarely used, but present in Postman)
+/**
+ * Delete Admin Profile (optional)
+ * DELETE /admin/me
+ */
 export async function deleteAdminAccount({ signal } = {}) {
   const res = await apiClient.delete(ENDPOINTS.ADMIN.PROFILE, { signal });
   return res.data;
 }
-
-

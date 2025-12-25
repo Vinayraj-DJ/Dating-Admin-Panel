@@ -1,0 +1,77 @@
+/* src/components/TableControls/TableControls.module.css */
+.controlsRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  flex-wrap: nowrap;
+}
+
+.leftControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 180px;
+  flex: 0 0 auto;
+}
+.showLabel {
+  color: #374151;
+  font-weight: 600;
+  margin-right: 6px;
+}
+.itemsPerPageSelect {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(15,23,42,0.06);
+  background: #fff;
+  outline: none;
+  min-width: 72px;
+  text-align: center;
+}
+.entriesText {
+  color: #6b7280;
+  font-size: 14px;
+  margin-left: 6px;
+}
+
+.rightControls {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex: 1 1 auto;
+}
+
+.searchBox {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:#fff;
+  padding:10px 16px;
+  border-radius:28px;
+  width:100%;
+  max-width:760px;
+  box-shadow: 0 6px 30px rgba(122,52,235,0.12);
+  border: 1px solid rgba(122,52,235,0.06);
+}
+.searchIcon {
+  color: var(--Primary_Color, #7a34eb);
+  font-size:20px;
+  flex:0 0 auto;
+}
+.searchInput {
+  border:none;
+  outline:none;
+  font-size:16px;
+  width:100%;
+  background:transparent;
+  padding:6px 0;
+}
+
+/* responsive: stack on small screens */
+@media (max-width: 880px) {
+  .controlsRow { flex-direction: column; align-items: stretch; gap: 10px; }
+  .leftControls { width:100%; min-width:0; }
+  .rightControls { width:100%; justify-content:flex-start; }
+  .searchBox { max-width:100%; }
+}

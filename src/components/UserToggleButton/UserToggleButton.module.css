@@ -1,0 +1,41 @@
+/* src/components/UserToggleButton/UserToggleButton.module.css */
+.userToggleBtn {
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  color: #fff;
+  min-width: 110px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+  box-shadow: 0 8px 22px rgba(14,14,20,0.06);
+}
+
+.loading {
+  opacity: 0.7;
+  cursor: default;
+}
+
+/* green for Activate */
+.activate {
+  background: linear-gradient(180deg,#10b981,#059669);
+  box-shadow: 0 8px 22px rgba(16,185,129,0.12);
+}
+
+/* red for Deactivate */
+.deactivate {
+  background: linear-gradient(180deg,#f43f5e,#dc2626);
+  box-shadow: 0 8px 22px rgba(244,63,94,0.12);
+}
+
+@media (max-width: 520px) {
+  .userToggleBtn {
+    min-width: 88px;
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+}

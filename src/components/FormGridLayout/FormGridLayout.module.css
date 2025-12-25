@@ -1,0 +1,7 @@
+.grid2 { display:grid; grid-template-columns: repeat(2,1fr); gap:1rem; align-items:start; }
+.grid3 { display:grid; grid-template-columns: repeat(3,1fr); gap:1rem; align-items:start; }
+.grid4 { display:grid; grid-template-columns: repeat(4,1fr); gap:1rem; align-items:start; }
+
+@media (max-width: 900px) {
+  .grid2, .grid3, .grid4 { grid-template-columns: 1fr; }
+}

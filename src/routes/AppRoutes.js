@@ -49,6 +49,8 @@ import CoinManage from "../pages/UserList/CoinManage";
 
 import { isAuthed } from "../utils/auth";
 
+import SettingManagement from "../pages/settings/settingManagement";   
+
 // wrappers
 function PublicOnly() {
   return isAuthed() ? <Navigate to="/dashboard" replace /> : <Outlet />;
@@ -157,6 +159,14 @@ export default function AppRoutes() {
 
           {/* Misc */}
           <Route path="pushnotification" element={<PushNotification />} />
+
+          {/* settings */}
+          <Route path="/setting" element={<SettingManagement/>} />
+
+
+        <Route path="/user-info/:user_id" element={<UserInfo />} />
+
+
         </Route>
       </Route>
 
